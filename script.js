@@ -1,4 +1,4 @@
-fetch('data/family.json')
+fetch('./data/family.json')
 .then(res => res.json())
 .then(data => {
 
