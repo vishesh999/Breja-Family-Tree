@@ -11,14 +11,13 @@
  "spouse":"niti"
 },
   {
-    "id": "niti",
-    "name": "Niti Breja",
-    "role": "Spouse",
-    "dob": "10-07-1995",
-    "pob": "Faridabad",
-    "status": "living",
-    "img": "img/niti_breja.jpeg"
-  },
+ "id":"niti",
+ "name":"Niti Breja",
+ "role":"Spouse",
+ "status":"living",
+ "img":"img/niti_breja.jpg",
+ "spouse":"vishesh"
+}
 
   {
  "id":"praveen",
