@@ -5,21 +5,25 @@ fetch('data/family.json')
 const tree = document.getElementById('tree');
 tree.innerHTML = "";
 
-// Identify parents
+// Who is a parent of someone?
 let parentIds = [];
 
-data.forEach(p => {
+data.forEach(p=>{
  if(p.father) parentIds.push(p.father);
  if(p.mother) parentIds.push(p.mother);
 });
 
 parentIds = [...new Set(parentIds)];
 
-const parents = data.filter(p => parentIds.includes(p.id));
-const children = data.filter(p => p.father || p.mother);
+// Row 1 - Parents
+const parents = data.filter(p=>parentIds.includes(p.id));
 
-// include spouses
+// Row 2 - Children
+const children = data.filter(p=>p.father || p.mother);
+
+// Add spouses of children
 let spouses = [];
+
 children.forEach(c=>{
  if(c.spouse){
   let sp = data.find(p=>p.id===c.spouse);
@@ -27,9 +31,12 @@ children.forEach(c=>{
  }
 });
 
+// Merge children + spouses
 const childGen = [...new Set([...children,...spouses])];
 
-// Parent row
+// ---- RENDER ----
+
+// Parent Row
 const pRow = document.createElement('div');
 pRow.style.display="flex";
 pRow.style.justifyContent="center";
@@ -39,7 +46,7 @@ pRow.style.marginBottom="40px";
 parents.forEach(p=>pRow.appendChild(card(p)));
 tree.appendChild(pRow);
 
-// Children row
+// Child Row
 const cRow = document.createElement('div');
 cRow.style.display="flex";
 cRow.style.justifyContent="center";
@@ -48,6 +55,7 @@ cRow.style.gap="20px";
 childGen.forEach(p=>cRow.appendChild(card(p)));
 tree.appendChild(cRow);
 
+// Card Function
 function card(p){
  const d=document.createElement('div');
  d.className="card";
