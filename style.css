@@ -1,0 +1,19 @@
+body{
+background: radial-gradient(circle at 20% 20%, #19140f, #0a0705);
+font-family:'EB Garamond',serif;
+color:#f6edd8;
+margin:0;padding:40px;
+}
+.card{
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(214,178,94,0.25);
+padding:20px;border-radius:14px;
+margin:10px;width:260px;
+display:inline-block;
+backdrop-filter:blur(8px);
+box-shadow:0 20px 40px rgba(0,0,0,0.6);
+}
+.card img{
+width:80px;height:80px;border-radius:50%;object-fit:cover;
+}
+.deceased{border-color:#6e9b7b;}
