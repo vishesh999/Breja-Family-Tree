@@ -1,13 +1,15 @@
 [
   {
-    "id": "vishesh",
-    "name": "Vishesh Breja",
-    "role": "Root",
-    "dob": "21-10-1993",
-    "pob": "Faridabad",
-    "status": "living",
-    "img": "img/vishesh_breja.jpeg"
-  },
+ "id":"vishesh",
+ "name":"Vishesh Breja",
+ "role":"Root",
+ "status":"living",
+ "img":"img/vishesh_breja.jpg",
+ "father":"praveen",
+ "mother":"uma",
+ "sibling":["namita"],
+ "spouse":"niti"
+},
   {
     "id": "niti",
     "name": "Niti Breja",
