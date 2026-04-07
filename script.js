@@ -3,8 +3,9 @@ fetch('data/family.json')
 .then(data => {
 
 const tree = document.getElementById('tree');
+tree.innerHTML = "";
 
-// Identify parents of someone
+// Identify parents
 let parentIds = [];
 
 data.forEach(p => {
@@ -15,52 +16,43 @@ data.forEach(p => {
 parentIds = [...new Set(parentIds)];
 
 const parents = data.filter(p => parentIds.includes(p.id));
-
-// Find children
 const children = data.filter(p => p.father || p.mother);
 
-// Add spouses of children
-let spouseIds = [];
-
-children.forEach(c => {
- if(c.spouse) spouseIds.push(c.spouse);
+// include spouses
+let spouses = [];
+children.forEach(c=>{
+ if(c.spouse){
+  let sp = data.find(p=>p.id===c.spouse);
+  if(sp) spouses.push(sp);
+ }
 });
 
-const spouses = data.filter(p => spouseIds.includes(p.id));
+const childGen = [...new Set([...children,...spouses])];
 
-// Merge children + spouses
-const childGeneration = [...children, ...spouses];
+// Parent row
+const pRow = document.createElement('div');
+pRow.style.display="flex";
+pRow.style.justifyContent="center";
+pRow.style.gap="20px";
+pRow.style.marginBottom="40px";
 
-// Row 1 - Parents
-const parentRow = document.createElement('div');
-parentRow.style.display = "flex";
-parentRow.style.justifyContent = "center";
-parentRow.style.gap = "20px";
-parentRow.style.marginBottom = "40px";
+parents.forEach(p=>pRow.appendChild(card(p)));
+tree.appendChild(pRow);
 
-parents.forEach(p => parentRow.appendChild(createCard(p)));
-tree.appendChild(parentRow);
+// Children row
+const cRow = document.createElement('div');
+cRow.style.display="flex";
+cRow.style.justifyContent="center";
+cRow.style.gap="20px";
 
-// Row 2 - Children + Spouses
-const childRow = document.createElement('div');
-childRow.style.display = "flex";
-childRow.style.justifyContent = "center";
-childRow.style.gap = "20px";
+childGen.forEach(p=>cRow.appendChild(card(p)));
+tree.appendChild(cRow);
 
-childGeneration.forEach(p => childRow.appendChild(createCard(p)));
-tree.appendChild(childRow);
-
-function createCard(p){
-
-const div = document.createElement('div');
-div.className = 'card';
-
-div.innerHTML = `
-<h3>${p.name}</h3>
-<p>${p.role}</p>
-`;
-
-return div;
+function card(p){
+ const d=document.createElement('div');
+ d.className="card";
+ d.innerHTML=`<h3>${p.name}</h3><p>${p.role}</p>`;
+ return d;
 }
 
 });
