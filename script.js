@@ -4,7 +4,7 @@ fetch('data/family.json')
 
 const tree = document.getElementById('tree');
 
-// Get all parent IDs from children
+// Identify parents of someone
 let parentIds = [];
 
 data.forEach(p => {
@@ -12,14 +12,24 @@ data.forEach(p => {
  if(p.mother) parentIds.push(p.mother);
 });
 
-// Remove duplicates
 parentIds = [...new Set(parentIds)];
 
-// Parents are those who are referenced as father/mother
 const parents = data.filter(p => parentIds.includes(p.id));
 
-// Children are those who have father/mother
+// Find children
 const children = data.filter(p => p.father || p.mother);
+
+// Add spouses of children
+let spouseIds = [];
+
+children.forEach(c => {
+ if(c.spouse) spouseIds.push(c.spouse);
+});
+
+const spouses = data.filter(p => spouseIds.includes(p.id));
+
+// Merge children + spouses
+const childGeneration = [...children, ...spouses];
 
 // Row 1 - Parents
 const parentRow = document.createElement('div');
@@ -31,26 +41,23 @@ parentRow.style.marginBottom = "40px";
 parents.forEach(p => parentRow.appendChild(createCard(p)));
 tree.appendChild(parentRow);
 
-// Row 2 - Children
+// Row 2 - Children + Spouses
 const childRow = document.createElement('div');
 childRow.style.display = "flex";
 childRow.style.justifyContent = "center";
 childRow.style.gap = "20px";
 
-children.forEach(p => childRow.appendChild(createCard(p)));
+childGeneration.forEach(p => childRow.appendChild(createCard(p)));
 tree.appendChild(childRow);
 
 function createCard(p){
 
 const div = document.createElement('div');
-div.className = 'card '+(p.status==='deceased'?'deceased':'');
+div.className = 'card';
 
 div.innerHTML = `
 <h3>${p.name}</h3>
 <p>${p.role}</p>
-<p>DOB: ${p.dob || '-'}</p>
-<p>POB: ${p.pob || '-'}</p>
-${p.dod ? `<p>DOD: ${p.dod}</p>`:''}
 `;
 
 return div;
