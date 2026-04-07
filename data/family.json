@@ -1,0 +1,20 @@
+[
+  {
+    "id": "vishesh",
+    "name": "Vishesh Breja",
+    "role": "Root",
+    "dob": "21-10-1993",
+    "pob": "Faridabad",
+    "status": "living",
+    "img": "img/vishesh.jpg"
+  },
+  {
+    "id": "niti",
+    "name": "Niti Breja",
+    "role": "Spouse",
+    "dob": "10-07-1995",
+    "pob": "Faridabad",
+    "status": "living",
+    "img": "img/niti.jpg"
+  }
+]
