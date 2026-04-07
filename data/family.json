@@ -6,7 +6,7 @@
     "dob": "21-10-1993",
     "pob": "Faridabad",
     "status": "living",
-    "img": "img/vishesh_breja.jpg"
+    "img": "img/vishesh_breja.jpeg"
   },
   {
     "id": "niti",
@@ -15,6 +15,6 @@
     "dob": "10-07-1995",
     "pob": "Faridabad",
     "status": "living",
-    "img": "img/niti_breja.jpg"
+    "img": "img/niti_breja.jpeg"
   }
 ]
