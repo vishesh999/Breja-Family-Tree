@@ -1,42 +1,162 @@
-body{
-  background: radial-gradient(circle at 20% 20%, #19140f, #0a0705);
-  font-family:'EB Garamond',serif;
-  color:#f6edd8;
-  margin:0;
-  padding:40px;
+/* ─── Reset & Base ───────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: radial-gradient(ellipse at 18% 8%, #1c1408, #0a0705 65%);
+  font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  color: #f6edd8;
+  min-height: 100vh;
+  padding: 50px 24px 80px;
 }
 
-.row{
-  display:flex;
-  justify-content:center;
-  gap:40px;
-  margin-bottom:40px;
-  flex-wrap:wrap;
+/* ─── Header ─────────────────────────────────────────────────────────────────── */
+header {
+  text-align: center;
+  margin-bottom: 56px;
 }
 
-.couple{
-  display:flex;
-  align-items:center;
-  gap:10px;
+header h1 {
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #d6b25e;
+  text-shadow: 0 2px 18px rgba(214, 178, 94, 0.25);
 }
 
-.card{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(214,178,94,0.25);
-  padding:20px;
-  border-radius:14px;
-  margin:10px;
-  width:260px;
-  backdrop-filter:blur(8px);
-  box-shadow:0 20px 40px rgba(0,0,0,0.6);
-  text-align:center;
+.subtitle {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: rgba(246, 237, 216, 0.45);
+  margin-top: 6px;
+  letter-spacing: 0.06em;
 }
 
-.card img{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  object-fit:cover;
-  display:block;
-  margin:0 auto 10px auto;
+.header-line {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(214, 178, 94, 0.55), transparent);
+  margin: 18px auto 0;
+}
+
+/* ─── Tree container ─────────────────────────────────────────────────────────── */
+#tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ─── Generation row ─────────────────────────────────────────────────────────── */
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+/* ─── Couple and single wrappers ─────────────────────────────────────────────── */
+.couple-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.single-wrap {
+  display: flex;
+}
+
+/* ─── Heart between spouses ──────────────────────────────────────────────────── */
+.heart {
+  color: #d6b25e;
+  font-size: 1.25rem;
+  padding: 0 4px;
+  opacity: 0.7;
+  flex-shrink: 0;
+  /* vertically centred to the photo, not the full card height */
+  margin-bottom: 52px;
+}
+
+/* ─── Connector between generations ─────────────────────────────────────────── */
+.connector {
+  width: 2px;
+  height: 52px;
+  margin: 0 auto;
+  background: linear-gradient(
+    to bottom,
+    rgba(214, 178, 94, 0.55),
+    rgba(214, 178, 94, 0.08)
+  );
+  border-radius: 1px;
+}
+
+/* ─── Individual card ────────────────────────────────────────────────────────── */
+.card {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(214, 178, 94, 0.22);
+  border-radius: 18px;
+  padding: 22px 16px 18px;
+  width: 155px;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  cursor: default;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.7);
+  border-color: rgba(214, 178, 94, 0.45);
+}
+
+.card.deceased {
+  opacity: 0.55;
+  filter: grayscale(50%);
+}
+
+.card img {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 14px;
+  border: 2px solid rgba(214, 178, 94, 0.38);
+  background: #1c1408;
+}
+
+.card h3 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #f6edd8;
+  line-height: 1.35;
+  margin-bottom: 5px;
+}
+
+.card .role {
+  font-size: 0.76rem;
+  font-style: italic;
+  color: rgba(214, 178, 94, 0.72);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Loading / error states ─────────────────────────────────────────────────── */
+.loading, .error {
+  text-align: center;
+  font-style: italic;
+  color: rgba(246, 237, 216, 0.45);
+  margin-top: 60px;
+  font-size: 1rem;
+}
+
+.error { color: #e07070; }
+
+/* ─── Responsive ─────────────────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  body { padding: 36px 14px 60px; }
+  .card { width: 130px; padding: 18px 12px 14px; }
+  .card img { width: 68px; height: 68px; }
+  .card h3 { font-size: 0.8rem; }
+  .row { gap: 16px; }
+  .heart { font-size: 1rem; margin-bottom: 44px; }
 }
