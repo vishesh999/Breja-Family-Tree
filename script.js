@@ -61,7 +61,13 @@ tree.appendChild(cRow);
 function card(p){
  const d=document.createElement('div');
  d.className="card";
- d.innerHTML=`<h3>${p.name}</h3><p>${p.role}</p>`;
+
+ d.innerHTML=`
+   <img src="${p.img}" alt="${p.name}">
+   <h3>${p.name}</h3>
+   <p>${p.role}</p>
+ `;
+
  return d;
 }
 
