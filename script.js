@@ -5,64 +5,77 @@ fetch('data/family.json', { cache: "no-store" })
 })
 .then(data => {
 
-  const tree = document.getElementById('tree');
-  tree.innerHTML = "";
+const tree = document.getElementById('tree');
+tree.innerHTML = "";
 
-  // ---- FIND WHO ARE PARENTS (referenced by someone) ----
-  let parentIds = [];
-  data.forEach(p=>{
-    if(p.father) parentIds.push(p.father);
-    if(p.mother) parentIds.push(p.mother);
-  });
-  parentIds = [...new Set(parentIds)];
+// ---- FIND PARENTS ----
+let parentIds = [];
 
-  const parents  = data.filter(p => parentIds.includes(p.id));
-  const children = data.filter(p => p.father || p.mother);
+data.forEach(p=>{
+ if(p.father) parentIds.push(p.father);
+ if(p.mother) parentIds.push(p.mother);
+});
 
-  // ---- PARENT ROW ----
-  const parentRow = document.createElement('div');
-  parentRow.className = "row";
-  parents.forEach(p => parentRow.appendChild(card(p)));
-  tree.appendChild(parentRow);
+parentIds = [...new Set(parentIds)];
 
-  // ---- CHILD + SPOUSE ROW ----
-  const childRow = document.createElement('div');
-  childRow.className = "row";
+const parents  = data.filter(p=>parentIds.includes(p.id));
+const children = data.filter(p=>p.father || p.mother);
 
-  children.forEach(c => {
 
-    const couple = document.createElement('div');
-    couple.className = "couple";
+// ---- PARENT ROW ----
+const parentRow = document.createElement('div');
+parentRow.className="row";
 
-    // child
-    couple.appendChild(card(c));
+parents.forEach(p=>{
+ parentRow.appendChild(card(p));
+});
 
-    // spouse beside
-    if(c.spouse){
-      const sp = data.find(p => p.id === c.spouse);
-      if(sp) couple.appendChild(card(sp));
-    }
+tree.appendChild(parentRow);
 
-    childRow.appendChild(couple);
-  });
 
-  tree.appendChild(childRow);
+// ---- CHILD + SPOUSE ROW ----
+const childRow = document.createElement('div');
+childRow.className="row";
 
-  // ---- CARD ----
-  function card(p){
-    const d = document.createElement('div');
-    d.className = "card";
-    d.innerHTML = `
-      <img src="${p.img}" alt="${p.name}" onerror="this.style.display='none'">
-      <h3>${p.name}</h3>
-      <p>${p.role}</p>
-    `;
-    return d;
-  }
+children.forEach(c=>{
+
+ const couple=document.createElement('div');
+ couple.className="couple";
+
+ couple.appendChild(card(c));
+
+ if(c.spouse){
+  let sp=data.find(p=>p.id===c.spouse);
+  if(sp) couple.appendChild(card(sp));
+ }
+
+ childRow.appendChild(couple);
+});
+
+tree.appendChild(childRow);
+
+
+// ---- CARD ----
+function card(p){
+
+ const d=document.createElement('div');
+ d.className="card";
+
+ // 🔥 THIS IS THE REAL FIX
+ const imgPath = new URL(p.img, document.baseURI).href;
+
+ d.innerHTML=`
+   <img src="${imgPath}" alt="${p.name}">
+   <h3>${p.name}</h3>
+   <p>${p.role}</p>
+ `;
+
+ return d;
+}
 
 })
 .catch(err=>{
-  document.getElementById('tree').innerHTML =
-  `<p style="color:red">Error loading family tree</p>`;
-  console.error(err);
+ document.getElementById('tree').innerHTML =
+ `<p style="color:red">Error loading family tree</p>`;
+ console.error(err);
 });
