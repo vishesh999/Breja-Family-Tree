@@ -1,44 +1,47 @@
 [
   {
-    "id":"vishesh",
-    "name":"Vishesh Breja",
-    "role":"Root",
-    "status":"living",
-    "img":"img/vishesh_breja.jpg",
-    "father":"praveen",
-    "mother":"uma",
-    "sibling":["namita"],
-    "spouse":"niti"
+    "id": "praveen",
+    "name": "Praveen Kumar Breja",
+    "role": "Patriarch",
+    "status": "living",
+    "img": "img/praveen_kumar_breja.jpeg",
+    "spouse": "uma"
   },
   {
-    "id":"niti",
-    "name":"Niti Breja",
-    "role":"Spouse",
-    "status":"living",
-    "img":"img/niti_breja.jpg",
-    "spouse":"vishesh"
+    "id": "uma",
+    "name": "Uma Breja",
+    "role": "Matriarch",
+    "status": "living",
+    "img": "img/uma_breja.jpeg",
+    "spouse": "praveen"
   },
   {
-    "id":"praveen",
-    "name":"Praveen Kumar Breja",
-    "role":"Father",
-    "status":"living",
-    "img":"img/praveen_kumar_breja.jpg"
+    "id": "vishesh",
+    "name": "Vishesh Breja",
+    "role": "Son",
+    "status": "living",
+    "img": "img/vishesh_breja.jpeg",
+    "father": "praveen",
+    "mother": "uma",
+    "sibling": ["namita"],
+    "spouse": "niti"
   },
   {
-    "id":"uma",
-    "name":"Uma Breja",
-    "role":"Mother",
-    "status":"living",
-    "img":"img/uma_breja.jpg"
+    "id": "niti",
+    "name": "Niti Breja",
+    "role": "Daughter-in-law",
+    "status": "living",
+    "img": "img/niti_breja.jpeg",
+    "spouse": "vishesh"
   },
   {
-    "id":"namita",
-    "name":"Namita Breja",
-    "role":"Sister",
-    "status":"living",
-    "img":"img/namita_breja.jpg",
-    "father":"praveen",
-    "mother":"uma"
+    "id": "namita",
+    "name": "Namita Breja",
+    "role": "Daughter",
+    "status": "living",
+    "img": "img/namita_breja.jpeg",
+    "father": "praveen",
+    "mother": "uma",
+    "sibling": ["vishesh"]
   }
 ]
