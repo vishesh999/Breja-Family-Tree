@@ -43,5 +43,23 @@
     "father": "praveen",
     "mother": "uma",
     "sibling": ["vishesh"]
+  },
+  {
+  "id": "rahul",
+  "name": "Rahul Bajaj",
+  "role": "Son-in-law",
+  "status": "living",
+  "img": "img/rahul_bajaj.jpeg",
+  "spouse": "namita"
+  },
+  {
+  "id": "varnit",
+  "name": "Varnit Bajaj",
+  "role": "Grandson",
+  "status": "living",
+  "img": "img/varnit_bajaj.jpeg",
+  "father": "rahul",
+  "mother": "namita"
   }
+  
 ]
