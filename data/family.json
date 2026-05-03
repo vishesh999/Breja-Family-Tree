@@ -35,14 +35,15 @@
     "spouse": "vishesh"
   },
   {
-    "id": "namita",
-    "name": "Namita Breja",
-    "role": "Daughter",
-    "status": "living",
-    "img": "img/namita_breja.jpeg",
-    "father": "praveen",
-    "mother": "uma",
-    "sibling": ["vishesh"]
+  "id": "namita",
+  "name": "Namita Breja",
+  "role": "Daughter",
+  "status": "living",
+  "img": "img/namita_breja.jpeg",
+  "father": "praveen",
+  "mother": "uma",
+  "sibling": ["vishesh"],
+  "spouse": "rahul"
   },
   {
   "id": "rahul",
