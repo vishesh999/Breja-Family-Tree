@@ -16,6 +16,18 @@
     "spouse": "praveen"
   },
   {
+    "id": "namita",
+    "name": "Namita Breja",
+    "role": "Daughter",
+    "status": "living",
+    "img": "img/namita_breja.jpeg",
+    "father": "praveen",
+    "mother": "uma",
+    "sibling": ["vishesh"],
+    "spouse": "rahul",
+    "birthOrder": 1
+  },
+  {
     "id": "vishesh",
     "name": "Vishesh Breja",
     "role": "Son",
@@ -24,7 +36,16 @@
     "father": "praveen",
     "mother": "uma",
     "sibling": ["namita"],
-    "spouse": "niti"
+    "spouse": "niti",
+    "birthOrder": 2
+  },
+  {
+    "id": "rahul",
+    "name": "Rahul Bajaj",
+    "role": "Son-in-law",
+    "status": "living",
+    "img": "img/rahul_bajaj.jpeg",
+    "spouse": "namita"
   },
   {
     "id": "niti",
@@ -35,32 +56,12 @@
     "spouse": "vishesh"
   },
   {
-  "id": "namita",
-  "name": "Namita Breja",
-  "role": "Daughter",
-  "status": "living",
-  "img": "img/namita_breja.jpeg",
-  "father": "praveen",
-  "mother": "uma",
-  "sibling": ["vishesh"],
-  "spouse": "rahul"
-  },
-  {
-  "id": "rahul",
-  "name": "Rahul Bajaj",
-  "role": "Son-in-law",
-  "status": "living",
-  "img": "img/rahul_bajaj.jpeg",
-  "spouse": "namita"
-  },
-  {
-  "id": "varnit",
-  "name": "Varnit Bajaj",
-  "role": "Grandson",
-  "status": "living",
-  "img": "img/varnit_bajaj.jpeg",
-  "father": "rahul",
-  "mother": "namita"
+    "id": "varnit",
+    "name": "Varnit Bajaj",
+    "role": "Grandson",
+    "status": "living",
+    "img": "img/varnit_bajaj.jpeg",
+    "father": "rahul",
+    "mother": "namita"
   }
-  
 ]
