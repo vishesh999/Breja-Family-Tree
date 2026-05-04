@@ -21,107 +21,125 @@ fetch('data/family.json', { cache: 'no-store' })
     console.error(err);
   });
 
-// ─── Core rendering function ──────────────────────────────────────────────────
+// ─── BULLETPROOF RENDER ───────────────────────────────────────────────────────
 function renderTree(people) {
-
-  // 1. Build id → person map
   var byId = {};
   people.forEach(function (p) { byId[p.id] = p; });
 
-  // 2. Assign generation depth (recursive with memoisation)
-  var genCache = {};
-
-  function genOf(id) {
-    if (id in genCache) return genCache[id];
+  // STEP 1: Calculate generation for each person
+  var gen = {};
+  
+  function getGen(id, visited) {
+    if (visited && visited.has(id)) return -999; // Circular ref protection
+    if (id in gen) return gen[id];
+    
     var p = byId[id];
-    if (!p || (!p.father && !p.mother)) {
-      genCache[id] = 0;
-      return 0;
+    if (!p) return gen[id] = 0;
+    
+    var v = visited || new Set();
+    v.add(id);
+    
+    var parentGens = [];
+    if (p.father && p.father in byId) parentGens.push(getGen(p.father, v));
+    if (p.mother && p.mother in byId) parentGens.push(getGen(p.mother, v));
+    
+    if (parentGens.length === 0) {
+      gen[id] = 0; // No parents = gen 0
+    } else {
+      gen[id] = Math.max.apply(null, parentGens) + 1;
     }
-    var fg = p.father && byId[p.father] ? genOf(p.father) : -1;
-    var mg = p.mother && byId[p.mother] ? genOf(p.mother) : -1;
-    genCache[id] = Math.max(fg, mg) + 1;
-    return genCache[id];
+    return gen[id];
   }
 
-  people.forEach(function (p) { genOf(p.id); });
+  people.forEach(function (p) { getGen(p.id); });
 
-  // 3. Spouses inherit their partner's generation if they have no parents
-  //    Iterate twice to handle chains where both might shift.
-  for (var pass = 0; pass < 2; pass++) {
+  // STEP 2: Align spouses to same generation
+  var changed = true;
+  var iterations = 0;
+  while (changed && iterations < 10) {
+    changed = false;
+    iterations++;
     people.forEach(function (p) {
       if (!p.spouse || !byId[p.spouse]) return;
-      var myG = genCache[p.id];
-      var spG = genCache[p.spouse];
+      var myG = gen[p.id];
+      var spG = gen[p.spouse];
       if (myG !== spG) {
-        var max = Math.max(myG, spG);
-        genCache[p.id] = max;
-        genCache[p.spouse] = max;
+        var newG = Math.max(myG, spG);
+        gen[p.id] = newG;
+        gen[p.spouse] = newG;
+        changed = true;
       }
     });
   }
 
-  // 4. Group each generation into couples / singles (no duplicates)
-  var maxGen = Math.max.apply(null, Object.keys(genCache).map(function (k) { return genCache[k]; }));
-  var seen = {};
+  // STEP 3: Build generation rows with couple grouping
+  var maxGen = Math.max.apply(null, Object.keys(gen).map(function (k) { return gen[k]; }));
   var rows = [];
+  var used = {};
 
   for (var g = 0; g <= maxGen; g++) {
-    var inGen = people.filter(function (p) { return genCache[p.id] === g; });
-    var groups = [];
+    var inGen = people.filter(function (p) { return gen[p.id] === g && !used[p.id]; });
+    if (inGen.length === 0) continue;
 
+    var row = [];
     inGen.forEach(function (p) {
-      if (seen[p.id]) return;
-      seen[p.id] = true;
+      if (used[p.id]) return; // Skip if already in a couple
 
-      var sp = p.spouse ? byId[p.spouse] : null;
-      if (sp && !seen[sp.id]) {
-        seen[sp.id] = true;
-        groups.push({ 
-          couple: true, 
-          members: [p, sp]
-        });
+      var spouse = p.spouse && byId[p.spouse] ? byId[p.spouse] : null;
+      
+      if (spouse && !used[spouse.id] && gen[spouse.id] === g) {
+        // Render as couple
+        used[p.id] = true;
+        used[spouse.id] = true;
+        row.push({ type: 'couple', person1: p, person2: spouse });
       } else {
-        groups.push({ 
-          couple: false, 
-          members: [p]
-        });
+        // Render as single
+        used[p.id] = true;
+        row.push({ type: 'single', person: p });
       }
     });
 
-    if (groups.length) rows.push(groups);
+    if (row.length > 0) {
+      rows.push(row);
+    }
   }
 
-  // 5. Render to DOM
+  // STEP 4: Render to DOM
   var tree = document.getElementById('tree');
   tree.innerHTML = '';
 
-  rows.forEach(function (groups, gi) {
-    var row = document.createElement('div');
-    row.className = 'row';
+  rows.forEach(function (row, rowIdx) {
+    var rowDiv = document.createElement('div');
+    rowDiv.className = 'row';
 
-    groups.forEach(function (group) {
-      var wrap = document.createElement('div');
-      wrap.className = group.couple ? 'couple-wrap' : 'single-wrap';
-
-      group.members.forEach(function (person, i) {
-        wrap.appendChild(makeCard(person));
-        if (i === 0 && group.couple) {
-          var heart = document.createElement('div');
-          heart.className = 'heart';
-          heart.setAttribute('aria-hidden', 'true');
-          heart.innerHTML = '♥';
-          wrap.appendChild(heart);
-        }
-      });
-
-      row.appendChild(wrap);
+    row.forEach(function (item) {
+      if (item.type === 'couple') {
+        var coupleDiv = document.createElement('div');
+        coupleDiv.className = 'couple';
+        
+        var card1 = makeCard(item.person1);
+        var heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '♥';
+        var card2 = makeCard(item.person2);
+        
+        coupleDiv.appendChild(card1);
+        coupleDiv.appendChild(heart);
+        coupleDiv.appendChild(card2);
+        rowDiv.appendChild(coupleDiv);
+      } else {
+        var card = makeCard(item.person);
+        var singleDiv = document.createElement('div');
+        singleDiv.className = 'single';
+        singleDiv.appendChild(card);
+        rowDiv.appendChild(singleDiv);
+      }
     });
 
-    tree.appendChild(row);
+    tree.appendChild(rowDiv);
 
-    // Connector between generations
-    if (gi < rows.length - 1) {
+    // Connector between rows
+    if (rowIdx < rows.length - 1) {
       var conn = document.createElement('div');
       conn.className = 'connector';
       tree.appendChild(conn);
@@ -129,44 +147,39 @@ function renderTree(people) {
   });
 }
 
-// ─── Card factory ─────────────────────────────────────────────────────────────
+// ─── Make card ─────────────────────────────────────────────────────────────────
 function makeCard(person) {
   var card = document.createElement('div');
   card.className = 'card' + (person.status === 'deceased' ? ' deceased' : '');
 
+  var imgWrap = document.createElement('div');
+  imgWrap.className = 'img-wrap';
+  
   var img = document.createElement('img');
   img.alt = person.name;
   img.src = person.img || PLACEHOLDER;
   img.onerror = function () {
     this.src = PLACEHOLDER;
-    this.onerror = null;
   };
+  imgWrap.appendChild(img);
+  card.appendChild(imgWrap);
 
   var h3 = document.createElement('h3');
   h3.textContent = person.name;
+  card.appendChild(h3);
 
   var role = document.createElement('p');
   role.className = 'role';
-  
-  // Build role text with birth order tag if applicable
   var roleText = person.role || '';
   
+  // Add birth order if sibling exists
   if (person.sibling && person.sibling.length > 0 && person.birthOrder) {
-    var birthOrderTag = '';
-    if (person.birthOrder === 1) {
-      birthOrderTag = ' 👑 Elder';
-    } else if (person.birthOrder === 2) {
-      birthOrderTag = ' 👶 Younger';
-    }
-    if (birthOrderTag) {
-      roleText = roleText + birthOrderTag;
-    }
+    if (person.birthOrder === 1) roleText += ' 👑 Elder';
+    else if (person.birthOrder === 2) roleText += ' 👶 Younger';
   }
   
   role.textContent = roleText;
-
-  card.appendChild(img);
-  card.appendChild(h3);
   card.appendChild(role);
+
   return card;
 }
