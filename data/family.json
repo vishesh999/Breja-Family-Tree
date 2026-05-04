@@ -52,8 +52,8 @@
     "spouse": "badi"
   },
   {
-    "id": "chat",
-    "name": "Chat Bhua",
+    "id": "choti",
+    "name": "Choti Bhua",
     "role": "Aunt",
     "status": "living",
     "img": "img/chat_bhua.jpg",
@@ -62,12 +62,12 @@
     "spouse": "fulani"
   },
   {
-    "id": "fulani",
-    "name": "Fulani 2",
+    "id": "fufaji",
+    "name": "Fufaji 2",
     "role": "Uncle-in-law",
     "status": "deceased",
     "img": "img/fulani_2.jpg",
-    "spouse": "chat"
+    "spouse": "choti"
   },
   {
     "id": "praveen",
