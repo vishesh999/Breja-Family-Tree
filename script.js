@@ -30,7 +30,7 @@ function renderTree(people) {
   var gen = {};
   
   function getGen(id, visited) {
-    if (visited && visited.has(id)) return -999; // Circular ref protection
+    if (visited && visited.has(id)) return -999;
     if (id in gen) return gen[id];
     
     var p = byId[id];
@@ -44,7 +44,7 @@ function renderTree(people) {
     if (p.mother && p.mother in byId) parentGens.push(getGen(p.mother, v));
     
     if (parentGens.length === 0) {
-      gen[id] = 0; // No parents = gen 0
+      gen[id] = 0;
     } else {
       gen[id] = Math.max.apply(null, parentGens) + 1;
     }
@@ -72,63 +72,65 @@ function renderTree(people) {
     });
   }
 
-  // STEP 3: Build parent→children map WITH BOTH KEY ORDERINGS
-  var childrenOf = {};
+  // STEP 3: Build child→parent map (reversed for easier lookup)
+  var childToParents = {};
   people.forEach(function (p) {
     if (p.father || p.mother) {
-      var key1 = (p.father || 'X') + '|' + (p.mother || 'X');
-      var key2 = (p.mother || 'X') + '|' + (p.father || 'X');
-      if (!childrenOf[key1]) childrenOf[key1] = [];
-      if (!childrenOf[key2]) childrenOf[key2] = [];
-      childrenOf[key1].push(p);
-      childrenOf[key2].push(p);
+      childToParents[p.id] = {
+        father: p.father,
+        mother: p.mother
+      };
     }
   });
 
-  // STEP 4: Calculate max generation (FIX - was missing)
+  // STEP 4: Build generation rows by grouping couples
   var maxGen = Math.max.apply(null, Object.keys(gen).map(function (k) { return gen[k]; }));
   var rows = [];
   var used = {};
 
-  // STEP 5: Build generation rows with couple grouping + children positioning
   for (var g = 0; g <= maxGen; g++) {
     var inGen = people.filter(function (p) { return gen[p.id] === g && !used[p.id]; });
     if (inGen.length === 0) continue;
 
     var row = [];
+
     inGen.forEach(function (p) {
       if (used[p.id]) return;
 
       var spouse = p.spouse && byId[p.spouse] ? byId[p.spouse] : null;
       
       if (spouse && !used[spouse.id] && gen[spouse.id] === g) {
+        // Mark both as used NOW to prevent reprocessing
         used[p.id] = true;
         used[spouse.id] = true;
         
-        // FIXED: Check both key orderings - no duplicate
-        var childKey1 = p.id + '|' + spouse.id;
-        var childKey2 = spouse.id + '|' + p.id;
-        var children1 = childrenOf[childKey1] || [];
-        var children2 = childrenOf[childKey2] || [];
+        // Find ONLY direct children of THIS couple
+        var children = [];
+        people.forEach(function (child) {
+          var parents = childToParents[child.id];
+          if (!parents) return;
+          
+          // Check if child's parents match this couple (either order)
+          var match1 = parents.father === p.id && parents.mother === spouse.id;
+          var match2 = parents.father === spouse.id && parents.mother === p.id;
+          
+          if ((match1 || match2) && gen[child.id] === g + 1 && !child.spouse) {
+            children.push(child);
+          }
+        });
         
-        // Merge and dedupe
-        var childrenMap = {};
-        children1.forEach(function (c) { childrenMap[c.id] = c; });
-        children2.forEach(function (c) { childrenMap[c.id] = c; });
-        
-        var children = Object.keys(childrenMap)
-          .map(function (id) { return childrenMap[id]; })
-          .filter(function (c) { return gen[c.id] === g + 1 && !c.spouse; });
-        
-        row.push({ 
-          type: 'couple', 
-          person1: p, 
-          person2: spouse, 
-          children: children 
+        row.push({
+          type: 'couple',
+          person1: p,
+          person2: spouse,
+          children: children
         });
       } else {
         used[p.id] = true;
-        row.push({ type: 'single', person: p });
+        row.push({
+          type: 'single',
+          person: p
+        });
       }
     });
 
@@ -137,7 +139,7 @@ function renderTree(people) {
     }
   }
 
-  // STEP 6: Render to DOM
+  // STEP 5: Render to DOM
   var tree = document.getElementById('tree');
   tree.innerHTML = '';
 
@@ -164,13 +166,8 @@ function renderTree(people) {
         coupleDiv.appendChild(card2);
         coupleGroup.appendChild(coupleDiv);
         
-        // Render children below couple if they exist
+        // Render children below couple
         if (item.children && item.children.length > 0) {
-          // Mark children as used
-          item.children.forEach(function (child) {
-            used[child.id] = true;
-          });
-          
           var childConnector = document.createElement('div');
           childConnector.className = 'child-connector';
           coupleGroup.appendChild(childConnector);
@@ -185,10 +182,9 @@ function renderTree(people) {
         
         rowDiv.appendChild(coupleGroup);
       } else {
-        var card = makeCard(item.person);
         var singleDiv = document.createElement('div');
         singleDiv.className = 'single';
-        singleDiv.appendChild(card);
+        singleDiv.appendChild(makeCard(item.person));
         rowDiv.appendChild(singleDiv);
       }
     });
