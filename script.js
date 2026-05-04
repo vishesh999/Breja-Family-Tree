@@ -79,14 +79,12 @@ function renderTree(people) {
         seen[sp.id] = true;
         groups.push({ 
           couple: true, 
-          members: [p, sp],
-          coupleId: p.id + '-' + sp.id
+          members: [p, sp]
         });
       } else {
         groups.push({ 
           couple: false, 
-          members: [p],
-          coupleId: null
+          members: [p]
         });
       }
     });
@@ -94,17 +92,7 @@ function renderTree(people) {
     if (groups.length) rows.push(groups);
   }
 
-  // 5. Build child → parent mapping for children layout
-  var childrenOf = {};
-  people.forEach(function (p) {
-    if (p.father || p.mother) {
-      var parentKey = (p.father || '') + '-' + (p.mother || '');
-      if (!childrenOf[parentKey]) childrenOf[parentKey] = [];
-      childrenOf[parentKey].push(p);
-    }
-  });
-
-  // 6. Render to DOM
+  // 5. Render to DOM
   var tree = document.getElementById('tree');
   tree.innerHTML = '';
 
@@ -128,34 +116,6 @@ function renderTree(people) {
       });
 
       row.appendChild(wrap);
-
-      // Check if this couple/person has children to render below
-      if (group.couple) {
-        var parentKey = group.members[0].id + '-' + group.members[1].id;
-        var children = childrenOf[parentKey] || [];
-        
-        if (children.length > 0) {
-          // Create child group below parents
-          var childGroup = document.createElement('div');
-          childGroup.className = 'child-group';
-          
-          // Vertical connector from parents to children
-          var parentConnector = document.createElement('div');
-          parentConnector.className = 'parent-child-connector';
-          childGroup.appendChild(parentConnector);
-          
-          // Container for child cards
-          var childContainer = document.createElement('div');
-          childContainer.className = 'child-container';
-          
-          children.forEach(function (child) {
-            childContainer.appendChild(makeCard(child));
-          });
-          
-          childGroup.appendChild(childContainer);
-          wrap.appendChild(childGroup);
-        }
-      }
     });
 
     tree.appendChild(row);
@@ -197,10 +157,10 @@ function makeCard(person) {
       birthOrderTag = ' 👑 Elder';
     } else if (person.birthOrder === 2) {
       birthOrderTag = ' 👶 Younger';
-    } else if (person.birthOrder > 2) {
-      birthOrderTag = ' youngest';
     }
-    roleText = roleText + birthOrderTag;
+    if (birthOrderTag) {
+      roleText = roleText + birthOrderTag;
+    }
   }
   
   role.textContent = roleText;
