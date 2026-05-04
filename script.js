@@ -72,45 +72,53 @@ function renderTree(people) {
     });
   }
 
-  // STEP 3: Build parent→children map
+  // STEP 3: Build parent→children map WITH BOTH KEY ORDERINGS
   var childrenOf = {};
   people.forEach(function (p) {
     if (p.father || p.mother) {
-      var key = (p.father || 'X') + '|' + (p.mother || 'X');
-      if (!childrenOf[key]) childrenOf[key] = [];
-      childrenOf[key].push(p);
+      var key1 = (p.father || 'X') + '|' + (p.mother || 'X');
+      var key2 = (p.mother || 'X') + '|' + (p.father || 'X');
+      if (!childrenOf[key1]) childrenOf[key1] = [];
+      if (!childrenOf[key2]) childrenOf[key2] = [];
+      childrenOf[key1].push(p);
+      childrenOf[key2].push(p);
     }
   });
 
-  // STEP 4: Build generation rows with couple grouping + children positioning
+  // STEP 4: Calculate max generation (FIX - was missing)
   var maxGen = Math.max.apply(null, Object.keys(gen).map(function (k) { return gen[k]; }));
   var rows = [];
   var used = {};
 
+  // STEP 5: Build generation rows with couple grouping + children positioning
   for (var g = 0; g <= maxGen; g++) {
     var inGen = people.filter(function (p) { return gen[p.id] === g && !used[p.id]; });
     if (inGen.length === 0) continue;
 
     var row = [];
     inGen.forEach(function (p) {
-      if (used[p.id]) return; // Skip if already in a couple
+      if (used[p.id]) return;
 
       var spouse = p.spouse && byId[p.spouse] ? byId[p.spouse] : null;
       
       if (spouse && !used[spouse.id] && gen[spouse.id] === g) {
-        // Render as couple
         used[p.id] = true;
         used[spouse.id] = true;
         
-        // Check if this couple has children
-        var childKey = (p.id || 'X') + '|' + (spouse.id || 'X');
-        var childKey2 = (spouse.id || 'X') + '|' + (p.id || 'X');
-        var children = childrenOf[childKey] || childrenOf[childKey2] || [];
+        // FIXED: Check both key orderings - no duplicate
+        var childKey1 = p.id + '|' + spouse.id;
+        var childKey2 = spouse.id + '|' + p.id;
+        var children1 = childrenOf[childKey1] || [];
+        var children2 = childrenOf[childKey2] || [];
         
-        // Filter to only children in next generation without spouse
-        children = children.filter(function (c) {
-          return gen[c.id] === g + 1 && !c.spouse;
-        });
+        // Merge and dedupe
+        var childrenMap = {};
+        children1.forEach(function (c) { childrenMap[c.id] = c; });
+        children2.forEach(function (c) { childrenMap[c.id] = c; });
+        
+        var children = Object.keys(childrenMap)
+          .map(function (id) { return childrenMap[id]; })
+          .filter(function (c) { return gen[c.id] === g + 1 && !c.spouse; });
         
         row.push({ 
           type: 'couple', 
@@ -119,7 +127,6 @@ function renderTree(people) {
           children: children 
         });
       } else {
-        // Render as single
         used[p.id] = true;
         row.push({ type: 'single', person: p });
       }
@@ -130,7 +137,7 @@ function renderTree(people) {
     }
   }
 
-  // STEP 5: Render to DOM
+  // STEP 6: Render to DOM
   var tree = document.getElementById('tree');
   tree.innerHTML = '';
 
@@ -220,15 +227,7 @@ function makeCard(person) {
 
   var role = document.createElement('p');
   role.className = 'role';
-  var roleText = person.role || '';
-  
-  // Add birth order if sibling exists
-  if (person.sibling && person.sibling.length > 0 && person.birthOrder) {
-    if (person.birthOrder === 1) roleText += ' 👑 Elder';
-    else if (person.birthOrder === 2) roleText += ' 👶 Younger';
-  }
-  
-  role.textContent = roleText;
+  role.textContent = person.role || '';
   card.appendChild(role);
 
   return card;
