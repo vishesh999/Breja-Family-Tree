@@ -1,10 +1,82 @@
 [
   {
+    "id": "hargovind",
+    "name": "Hargovind Breja",
+    "role": "Grandfather",
+    "status": "deceased",
+    "img": "img/hargovind_breja.jpg",
+    "spouse": "ishwar"
+  },
+  {
+    "id": "ishwar",
+    "name": "Ishwar Devi",
+    "role": "Grandmother",
+    "status": "deceased",
+    "img": "img/ishwar_devi.jpg",
+    "spouse": "hargovind"
+  },
+  {
+    "id": "chaman",
+    "name": "Chaman Breja",
+    "role": "Uncle",
+    "status": "deceased",
+    "img": "img/chaman_breja.jpg",
+    "father": "hargovind",
+    "mother": "ishwar",
+    "spouse": "sudha"
+  },
+  {
+    "id": "sudha",
+    "name": "Sudha Breja",
+    "role": "Aunt",
+    "status": "living",
+    "img": "img/sudha_breja.jpg",
+    "spouse": "chaman"
+  },
+  {
+    "id": "badi",
+    "name": "Badi Bhua",
+    "role": "Aunt",
+    "status": "deceased",
+    "img": "img/badi_bhua.jpg",
+    "father": "hargovind",
+    "mother": "ishwar",
+    "spouse": "rajesh"
+  },
+  {
+    "id": "rajesh",
+    "name": "Rajesh Ahuja",
+    "role": "Uncle-in-law",
+    "status": "deceased",
+    "img": "img/rajesh_ahuja.jpg",
+    "spouse": "badi"
+  },
+  {
+    "id": "chat",
+    "name": "Chat Bhua",
+    "role": "Aunt",
+    "status": "living",
+    "img": "img/chat_bhua.jpg",
+    "father": "hargovind",
+    "mother": "ishwar",
+    "spouse": "fulani"
+  },
+  {
+    "id": "fulani",
+    "name": "Fulani 2",
+    "role": "Uncle-in-law",
+    "status": "deceased",
+    "img": "img/fulani_2.jpg",
+    "spouse": "chat"
+  },
+  {
     "id": "praveen",
     "name": "Praveen Kumar Breja",
     "role": "Patriarch",
     "status": "living",
-    "img": "img/praveen_kumar_breja.jpeg",
+    "img": "img/praveen_kumar_breja.jpg",
+    "father": "hargovind",
+    "mother": "ishwar",
     "spouse": "uma"
   },
   {
@@ -12,39 +84,55 @@
     "name": "Uma Breja",
     "role": "Matriarch",
     "status": "living",
-    "img": "img/uma_breja.jpeg",
+    "img": "img/uma_breja.jpg",
     "spouse": "praveen"
+  },
+  {
+    "id": "raj",
+    "name": "Raj Breja",
+    "role": "Uncle",
+    "status": "living",
+    "img": "img/raj_breja.jpg",
+    "father": "hargovind",
+    "mother": "ishwar",
+    "spouse": "kanta"
+  },
+  {
+    "id": "kanta",
+    "name": "Kanta Breja",
+    "role": "Aunt",
+    "status": "living",
+    "img": "img/kanta_breja.jpg",
+    "spouse": "raj"
   },
   {
     "id": "namita",
     "name": "Namita Breja",
-    "role": "Daughter",
+    "role": "Daughter 👑 Elder",
     "status": "living",
-    "img": "img/namita_breja.jpeg",
+    "img": "img/namita_breja.jpg",
     "father": "praveen",
     "mother": "uma",
     "sibling": ["vishesh"],
-    "spouse": "rahul",
-    "birthOrder": 1
+    "spouse": "rahul"
   },
   {
     "id": "vishesh",
     "name": "Vishesh Breja",
-    "role": "Son",
+    "role": "Son 👶 Younger",
     "status": "living",
-    "img": "img/vishesh_breja.jpeg",
+    "img": "img/vishesh_breja.jpg",
     "father": "praveen",
     "mother": "uma",
     "sibling": ["namita"],
-    "spouse": "niti",
-    "birthOrder": 2
+    "spouse": "niti"
   },
   {
     "id": "rahul",
     "name": "Rahul Bajaj",
     "role": "Son-in-law",
     "status": "living",
-    "img": "img/rahul_bajaj.jpeg",
+    "img": "img/rahul_bajaj.jpg",
     "spouse": "namita"
   },
   {
@@ -52,7 +140,7 @@
     "name": "Niti Breja",
     "role": "Daughter-in-law",
     "status": "living",
-    "img": "img/niti_breja.jpeg",
+    "img": "img/niti_breja.jpg",
     "spouse": "vishesh"
   },
   {
@@ -60,7 +148,7 @@
     "name": "Varnit Bajaj",
     "role": "Grandson",
     "status": "living",
-    "img": "img/varnit_bajaj.jpeg",
+    "img": "img/varnit_bajaj.jpg",
     "father": "rahul",
     "mother": "namita"
   }
