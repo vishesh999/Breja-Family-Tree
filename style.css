@@ -43,42 +43,55 @@ header h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0;
 }
 
 /* ─── Generation row ─────────────────────────────────────────────────────────── */
 .row {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: 28px;
+  align-items: center;
+  gap: 40px;
   flex-wrap: wrap;
+  margin: 0;
 }
 
-/* ─── Couple and single wrappers ─────────────────────────────────────────────── */
-.couple-wrap {
+/* ─── Couple group (two people with heart) ───────────────────────────────────── */
+.couple {
   display: flex;
   align-items: center;
+  gap: 0;
+  position: relative;
 }
 
-.single-wrap {
+.couple .card {
+  flex-shrink: 0;
+}
+
+.couple .heart {
+  color: #d6b25e;
+  font-size: 1.4rem;
+  opacity: 0.85;
+  padding: 0 8px;
+  flex-shrink: 0;
+  position: relative;
+  top: -2px;
+}
+
+/* ─── Single person ──────────────────────────────────────────────────────────── */
+.single {
   display: flex;
 }
 
-/* ─── Heart between spouses ──────────────────────────────────────────────────── */
-.heart {
-  color: #d6b25e;
-  font-size: 1.25rem;
-  padding: 0 4px;
-  opacity: 0.7;
+.single .card {
   flex-shrink: 0;
-  margin-bottom: 52px;
 }
 
 /* ─── Connector between generations ──────────────────────────────────────────── */
 .connector {
   width: 2px;
   height: 52px;
-  margin: 0 auto;
+  margin: 12px auto 12px;
   background: linear-gradient(
     to bottom,
     rgba(214, 178, 94, 0.55),
@@ -100,10 +113,6 @@ header h1 {
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
   cursor: default;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
 }
 
 .card:hover {
@@ -117,17 +126,26 @@ header h1 {
   filter: grayscale(50%);
 }
 
-.card img {
+/* ─── Image wrapper ──────────────────────────────────────────────────────────── */
+.img-wrap {
   width: 84px;
   height: 84px;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
   margin: 0 auto 14px;
+  border-radius: 50%;
+  overflow: hidden;
   border: 2px solid rgba(214, 178, 94, 0.38);
   background: #1c1408;
+  flex-shrink: 0;
 }
 
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────────────── */
 .card h3 {
   font-size: 0.88rem;
   font-weight: 600;
@@ -155,34 +173,47 @@ header h1 {
 .error { color: #e07070; }
 
 /* ─── Responsive ─────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  body { padding: 36px 12px 60px; }
+  .row { gap: 24px; }
+  .couple { gap: 0; }
+}
+
 @media (max-width: 520px) {
-  body { padding: 36px 14px 60px; }
+  body { padding: 30px 10px 50px; }
+  
+  header h1 { font-size: 1.6rem; }
   
   .card { 
     width: 130px; 
-    padding: 18px 12px 14px; 
+    padding: 16px 12px 12px; 
   }
   
-  .card img { 
-    width: 68px; 
-    height: 68px; 
-    margin-bottom: 12px;
+  .img-wrap { 
+    width: 72px; 
+    height: 72px; 
+    margin-bottom: 10px;
   }
   
   .card h3 { 
-    font-size: 0.8rem; 
+    font-size: 0.76rem; 
   }
   
   .card .role {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
   
   .row { 
     gap: 16px; 
   }
   
-  .heart { 
+  .couple .heart { 
     font-size: 1rem;
-    margin-bottom: 44px;
+    padding: 0 4px;
+  }
+  
+  .connector {
+    height: 40px;
+    margin: 8px auto;
   }
 }
