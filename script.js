@@ -72,7 +72,7 @@ function renderTree(people) {
     });
   }
 
-  // STEP 3: Build child→parent map (reversed for easier lookup)
+  // STEP 3: Build child→parent map
   var childToParents = {};
   people.forEach(function (p) {
     if (p.father || p.mother) {
@@ -100,17 +100,14 @@ function renderTree(people) {
       var spouse = p.spouse && byId[p.spouse] ? byId[p.spouse] : null;
       
       if (spouse && !used[spouse.id] && gen[spouse.id] === g) {
-        // Mark both as used NOW to prevent reprocessing
         used[p.id] = true;
         used[spouse.id] = true;
         
-        // Find ONLY direct children of THIS couple
         var children = [];
         people.forEach(function (child) {
           var parents = childToParents[child.id];
           if (!parents) return;
           
-          // Check if child's parents match this couple (either order)
           var match1 = parents.father === p.id && parents.mother === spouse.id;
           var match2 = parents.father === spouse.id && parents.mother === p.id;
           
@@ -166,7 +163,6 @@ function renderTree(people) {
         coupleDiv.appendChild(card2);
         coupleGroup.appendChild(coupleDiv);
         
-        // Render children below couple
         if (item.children && item.children.length > 0) {
           var childConnector = document.createElement('div');
           childConnector.className = 'child-connector';
@@ -191,7 +187,6 @@ function renderTree(people) {
 
     tree.appendChild(rowDiv);
 
-    // Connector between rows
     if (rowIdx < rows.length - 1) {
       var conn = document.createElement('div');
       conn.className = 'connector';
@@ -225,6 +220,23 @@ function makeCard(person) {
   role.className = 'role';
   role.textContent = person.role || '';
   card.appendChild(role);
+
+  var meta = document.createElement('p');
+  meta.className = 'meta';
+  var metaText = '';
+  
+  if (person.birth_year) {
+    metaText += 'b. ' + person.birth_year;
+  }
+  
+  if (person.status === 'deceased') {
+    metaText += (metaText ? ' | ' : '') + '✝ Deceased';
+  } else if (person.status === 'living') {
+    metaText += (metaText ? ' | ' : '') + '🕊 Living';
+  }
+  
+  meta.textContent = metaText;
+  card.appendChild(meta);
 
   return card;
 }
