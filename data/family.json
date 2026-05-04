@@ -58,12 +58,12 @@
     "spouse": "badi"
   },
   {
-    "id": "chat",
-    "name": "Chat Bhua",
+    "id": "choti",
+    "name": "Choti Bhua",
     "role": "Aunt",
     "status": "living",
     "birth_year": 1953,
-    "img": "img/chat_bhua.jpg",
+    "img": "img/choti_bhua.jpg",
     "father": "hargovind",
     "mother": "ishwar",
     "spouse": "fulani"
@@ -74,13 +74,13 @@
     "role": "Uncle-in-law",
     "status": "deceased",
     "birth_year": 1952,
-    "img": "img/fulani_2.jpg",
-    "spouse": "chat"
+    "img": "img/fufaji_2.jpg",
+    "spouse": "choti"
   },
   {
     "id": "praveen",
     "name": "Praveen Kumar Breja",
-    "role": "Patriarch",
+    "role": "Father",
     "status": "living",
     "birth_year": 1956,
     "img": "img/praveen_kumar_breja.jpg",
@@ -91,7 +91,7 @@
   {
     "id": "uma",
     "name": "Uma Breja",
-    "role": "Matriarch",
+    "role": "Mother",
     "status": "living",
     "birth_year": 1958,
     "img": "img/uma_breja.jpg",
