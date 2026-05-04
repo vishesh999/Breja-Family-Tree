@@ -72,7 +72,17 @@ function renderTree(people) {
     });
   }
 
-  // STEP 3: Build generation rows with couple grouping
+  // STEP 3: Build parent→children map
+  var childrenOf = {};
+  people.forEach(function (p) {
+    if (p.father || p.mother) {
+      var key = (p.father || 'X') + '|' + (p.mother || 'X');
+      if (!childrenOf[key]) childrenOf[key] = [];
+      childrenOf[key].push(p);
+    }
+  });
+
+  // STEP 4: Build generation rows with couple grouping + children positioning
   var maxGen = Math.max.apply(null, Object.keys(gen).map(function (k) { return gen[k]; }));
   var rows = [];
   var used = {};
@@ -91,7 +101,23 @@ function renderTree(people) {
         // Render as couple
         used[p.id] = true;
         used[spouse.id] = true;
-        row.push({ type: 'couple', person1: p, person2: spouse });
+        
+        // Check if this couple has children
+        var childKey = (p.id || 'X') + '|' + (spouse.id || 'X');
+        var childKey2 = (spouse.id || 'X') + '|' + (p.id || 'X');
+        var children = childrenOf[childKey] || childrenOf[childKey2] || [];
+        
+        // Filter to only children in next generation without spouse
+        children = children.filter(function (c) {
+          return gen[c.id] === g + 1 && !c.spouse;
+        });
+        
+        row.push({ 
+          type: 'couple', 
+          person1: p, 
+          person2: spouse, 
+          children: children 
+        });
       } else {
         // Render as single
         used[p.id] = true;
@@ -104,7 +130,7 @@ function renderTree(people) {
     }
   }
 
-  // STEP 4: Render to DOM
+  // STEP 5: Render to DOM
   var tree = document.getElementById('tree');
   tree.innerHTML = '';
 
@@ -114,6 +140,9 @@ function renderTree(people) {
 
     row.forEach(function (item) {
       if (item.type === 'couple') {
+        var coupleGroup = document.createElement('div');
+        coupleGroup.className = 'couple-group';
+        
         var coupleDiv = document.createElement('div');
         coupleDiv.className = 'couple';
         
@@ -126,7 +155,28 @@ function renderTree(people) {
         coupleDiv.appendChild(card1);
         coupleDiv.appendChild(heart);
         coupleDiv.appendChild(card2);
-        rowDiv.appendChild(coupleDiv);
+        coupleGroup.appendChild(coupleDiv);
+        
+        // Render children below couple if they exist
+        if (item.children && item.children.length > 0) {
+          // Mark children as used
+          item.children.forEach(function (child) {
+            used[child.id] = true;
+          });
+          
+          var childConnector = document.createElement('div');
+          childConnector.className = 'child-connector';
+          coupleGroup.appendChild(childConnector);
+          
+          var childrenDiv = document.createElement('div');
+          childrenDiv.className = 'children';
+          item.children.forEach(function (child) {
+            childrenDiv.appendChild(makeCard(child));
+          });
+          coupleGroup.appendChild(childrenDiv);
+        }
+        
+        rowDiv.appendChild(coupleGroup);
       } else {
         var card = makeCard(item.person);
         var singleDiv = document.createElement('div');
