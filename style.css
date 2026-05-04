@@ -78,6 +78,34 @@ header h1 {
   top: -2px;
 }
 
+/* ─── Couple with children ──────────────────────────────────────────────────── */
+.couple-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.child-connector {
+  width: 2px;
+  height: 36px;
+  margin: 4px auto 4px;
+  background: linear-gradient(
+    to bottom,
+    rgba(214, 178, 94, 0.55),
+    rgba(214, 178, 94, 0.08)
+  );
+  border-radius: 1px;
+}
+
+.children {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
 /* ─── Single person ──────────────────────────────────────────────────────────── */
 .single {
   display: flex;
