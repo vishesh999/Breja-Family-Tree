@@ -57,24 +57,11 @@ header h1 {
 /* ─── Couple and single wrappers ─────────────────────────────────────────────── */
 .couple-wrap {
   display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
 .single-wrap {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* ─── Couple card layout (horizontal) ─────────────────────────────────────────── */
-.couple-wrap > .card:first-child,
-.couple-wrap > .heart ~ .card {
-  display: inline-flex;
-}
-
-.couple-wrap > .card + .heart + .card {
-  margin-left: 0;
 }
 
 /* ─── Heart between spouses ──────────────────────────────────────────────────── */
@@ -84,41 +71,7 @@ header h1 {
   padding: 0 4px;
   opacity: 0.7;
   flex-shrink: 0;
-  order: 2;
-  position: relative;
-  top: 18px;
-  z-index: 10;
-}
-
-/* ─── Child group (children of a couple, positioned below) ───────────────────── */
-.child-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 12px;
-  order: 10;
-}
-
-/* ─── Connector from parent to child ──────────────────────────────────────────── */
-.parent-child-connector {
-  width: 2px;
-  height: 42px;
-  margin: 0 auto 8px;
-  background: linear-gradient(
-    to bottom,
-    rgba(214, 178, 94, 0.55),
-    rgba(214, 178, 94, 0.08)
-  );
-  border-radius: 1px;
-}
-
-/* ─── Child container (horizontal layout for multiple children) ────────────────── */
-.child-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 24px;
-  flex-wrap: wrap;
+  margin-bottom: 52px;
 }
 
 /* ─── Connector between generations ──────────────────────────────────────────── */
@@ -188,15 +141,6 @@ header h1 {
   font-style: italic;
   color: rgba(214, 178, 94, 0.72);
   letter-spacing: 0.02em;
-  line-height: 1.3;
-}
-
-/* ─── Birth order badge styling ──────────────────────────────────────────────── */
-.card .role {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
 }
 
 /* ─── Loading / error states ─────────────────────────────────────────────────── */
@@ -237,12 +181,8 @@ header h1 {
     gap: 16px; 
   }
   
-  .child-container {
-    gap: 16px;
-  }
-  
   .heart { 
     font-size: 1rem;
-    top: 14px;
+    margin-bottom: 44px;
   }
 }
