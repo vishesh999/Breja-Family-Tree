@@ -12,6 +12,8 @@ var PLACEHOLDER = (function () {
   return 'data:image/svg+xml,' + encodeURIComponent(svg);
 })();
 
+var treeContainer = document.getElementById('tree-container');
+
 function setStatus(message, isError) {
   if (!statusMessage) return;
   statusMessage.textContent = message;
@@ -27,7 +29,7 @@ function showLoading() {
 
 function showError(message) {
   if (tree) {
-    tree.innerHTML = '<p class="error">' + message + '</p>';
+    tree.innerHTML = '<p class="error">' + String(message || 'Unable to load data.') + '</p>';
   }
   setStatus('Unable to load data.', true);
 }
@@ -78,15 +80,14 @@ function handleSearch(event) {
     setStatus('No family members matched your search.');
   } else {
     setStatus(matches.length + ' member' + (matches.length === 1 ? '' : 's') + ' highlighted.');
-    var firstCard = tree && tree.querySelector('.card.match');
-    if (firstCard) {
-      firstCard.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-    }
+    var firstId = matches[0];
+    if (firstId) scrollToCard(firstId);
   }
 }
 
 searchInput && searchInput.addEventListener('input', handleSearch);
 
+// Zoom handling: scale the `#tree` while preserving the visual center
 var zoomLevel = 1;
 var zoomOutButton = document.getElementById('zoom-out');
 var zoomInButton = document.getElementById('zoom-in');
@@ -94,12 +95,26 @@ var zoomLevelDisplay = document.getElementById('zoom-level');
 
 function applyZoom() {
   if (!tree) return;
+  var prevScale = tree._scale || 1;
+  var prevCenterX = 0, prevCenterY = 0;
+  if (treeContainer) {
+    prevCenterX = (treeContainer.scrollLeft + treeContainer.clientWidth / 2) / prevScale;
+    prevCenterY = (treeContainer.scrollTop + treeContainer.clientHeight / 2) / prevScale;
+  }
+
   tree.style.transform = 'scale(' + zoomLevel + ')';
-  zoomLevelDisplay.textContent = Math.round(zoomLevel * 100) + '%';
+  tree._scale = zoomLevel;
+  zoomLevelDisplay && (zoomLevelDisplay.textContent = Math.round(zoomLevel * 100) + '%');
+
+  if (treeContainer) {
+    var newScrollLeft = Math.max(0, Math.round(prevCenterX * zoomLevel - treeContainer.clientWidth / 2));
+    var newScrollTop = Math.max(0, Math.round(prevCenterY * zoomLevel - treeContainer.clientHeight / 2));
+    treeContainer.scrollTo({ left: newScrollLeft, top: newScrollTop, behavior: 'auto' });
+  }
 }
 
 function updateZoom(delta) {
-  zoomLevel = Math.min(1.4, Math.max(0.7, zoomLevel + delta));
+  zoomLevel = Math.min(1.6, Math.max(0.6, Math.round((zoomLevel + delta) * 10) / 10));
   applyZoom();
 }
 
@@ -111,6 +126,20 @@ zoomInButton && zoomInButton.addEventListener('click', function () {
 });
 
 applyZoom();
+
+function scrollToCard(personId) {
+  if (!tree || !treeContainer) return;
+  var card = tree.querySelector('.card[data-person-id="' + personId + '"]');
+  if (!card) return;
+  // compute unscaled offsets within tree
+  var scale = tree._scale || 1;
+  var targetX = card.offsetLeft + card.offsetWidth / 2;
+  var targetY = card.offsetTop + card.offsetHeight / 2;
+  var scrollLeft = Math.max(0, Math.round(targetX * scale - treeContainer.clientWidth / 2));
+  var scrollTop = Math.max(0, Math.round(targetY * scale - treeContainer.clientHeight / 2));
+  treeContainer.scrollTo({ left: scrollLeft, top: scrollTop, behavior: 'smooth' });
+  card.focus({preventScroll: true});
+}
 
 showLoading();
 fetch('data/family.json', { cache: 'no-store' })
