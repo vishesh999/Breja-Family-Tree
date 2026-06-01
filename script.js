@@ -87,6 +87,31 @@ function handleSearch(event) {
 
 searchInput && searchInput.addEventListener('input', handleSearch);
 
+var zoomLevel = 1;
+var zoomOutButton = document.getElementById('zoom-out');
+var zoomInButton = document.getElementById('zoom-in');
+var zoomLevelDisplay = document.getElementById('zoom-level');
+
+function applyZoom() {
+  if (!tree) return;
+  tree.style.transform = 'scale(' + zoomLevel + ')';
+  zoomLevelDisplay.textContent = Math.round(zoomLevel * 100) + '%';
+}
+
+function updateZoom(delta) {
+  zoomLevel = Math.min(1.4, Math.max(0.7, zoomLevel + delta));
+  applyZoom();
+}
+
+zoomOutButton && zoomOutButton.addEventListener('click', function () {
+  updateZoom(-0.1);
+});
+zoomInButton && zoomInButton.addEventListener('click', function () {
+  updateZoom(0.1);
+});
+
+applyZoom();
+
 showLoading();
 fetch('data/family.json', { cache: 'no-store' })
   .then(function (response) {
@@ -105,166 +130,95 @@ function renderTree(people) {
   var byId = {};
   people.forEach(function (person) { byId[person.id] = person; });
 
-  var generation = {};
-  function getGeneration(id, visited) {
-    if (visited && visited.has(id)) return -999;
-    if (id in generation) return generation[id];
-    var person = byId[id];
-    if (!person) return generation[id] = 0;
-    var next = visited || new Set();
-    next.add(id);
-
-    var parentValues = [];
-    if (person.father && person.father in byId) parentValues.push(getGeneration(person.father, next));
-    if (person.mother && person.mother in byId) parentValues.push(getGeneration(person.mother, next));
-
-    generation[id] = parentValues.length === 0 ? 0 : Math.max.apply(null, parentValues) + 1;
-    return generation[id];
-  }
-
-  people.forEach(function (person) { getGeneration(person.id); });
-
-  var changed = true;
-  var passes = 0;
-  while (changed && passes < 10) {
-    changed = false;
-    passes += 1;
-    people.forEach(function (person) {
-      if (!person.spouse || !byId[person.spouse]) return;
-      var myGen = generation[person.id];
-      var spouseGen = generation[person.spouse];
-      if (myGen !== spouseGen) {
-        var newGen = Math.max(myGen, spouseGen);
-        generation[person.id] = newGen;
-        generation[person.spouse] = newGen;
-        changed = true;
+  function getChildren(parentA, parentB) {
+    return people.filter(function (child) {
+      if (!child.father && !child.mother) return false;
+      if (parentB === null) {
+        return child.father === parentA || child.mother === parentA;
       }
+      return (child.father === parentA && child.mother === parentB) ||
+             (child.father === parentB && child.mother === parentA);
     });
   }
 
-  var childToParents = {};
-  people.forEach(function (person) {
-    if (person.father || person.mother) {
-      childToParents[person.id] = { father: person.father, mother: person.mother };
+  var rendered = {};
+
+  function renderFamilyBlock(person) {
+    if (rendered[person.id]) return null;
+
+    var spouse = person.spouse && byId[person.spouse] ? byId[person.spouse] : null;
+    if (spouse && rendered[spouse.id]) {
+      spouse = null;
     }
+
+    if (spouse && person.id > spouse.id) {
+      return null;
+    }
+
+    var block = document.createElement('div');
+    block.className = 'family-block';
+
+    var coupleGroup = document.createElement('div');
+    coupleGroup.className = 'couple-group';
+
+    if (spouse) {
+      rendered[person.id] = true;
+      rendered[spouse.id] = true;
+      var coupleDiv = document.createElement('div');
+      coupleDiv.className = 'couple';
+      coupleDiv.appendChild(makeCard(person));
+      var heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerHTML = '♥';
+      coupleDiv.appendChild(heart);
+      coupleDiv.appendChild(makeCard(spouse));
+      coupleGroup.appendChild(coupleDiv);
+    } else {
+      rendered[person.id] = true;
+      var singleDiv = document.createElement('div');
+      singleDiv.className = 'single';
+      singleDiv.appendChild(makeCard(person));
+      coupleGroup.appendChild(singleDiv);
+    }
+
+    block.appendChild(coupleGroup);
+
+    var children = getChildren(person.id, spouse ? spouse.id : null);
+    if (children.length) {
+      var childConnector = document.createElement('div');
+      childConnector.className = 'child-connector';
+      block.appendChild(childConnector);
+
+      var childrenRow = document.createElement('div');
+      childrenRow.className = 'children children-row';
+      children.forEach(function (child) {
+        var childBlock = renderFamilyBlock(child);
+        if (childBlock) {
+          childrenRow.appendChild(childBlock);
+        }
+      });
+      block.appendChild(childrenRow);
+    }
+
+    return block;
+  }
+
+  var roots = people.filter(function (person) {
+    return !person.father && !person.mother;
   });
-
-  var maxGen = Math.max.apply(null, Object.keys(generation).map(function (key) { return generation[key]; }));
-  var rows = [];
-  var used = {};
-
-  for (var genIndex = 0; genIndex <= maxGen; genIndex++) {
-    var generationPeople = people.filter(function (person) { return generation[person.id] === genIndex && !used[person.id]; });
-    if (generationPeople.length === 0) continue;
-
-    var rowItems = [];
-    generationPeople.forEach(function (person) {
-      if (used[person.id]) return;
-      var spouse = person.spouse && byId[person.spouse] ? byId[person.spouse] : null;
-
-      if (spouse && !used[spouse.id] && generation[spouse.id] === genIndex) {
-        used[person.id] = true;
-        used[spouse.id] = true;
-
-        var children = [];
-        people.forEach(function (child) {
-          if (used[child.id]) return;
-          var parents = childToParents[child.id];
-          if (!parents) return;
-          var match1 = parents.father === person.id && parents.mother === spouse.id;
-          var match2 = parents.father === spouse.id && parents.mother === person.id;
-          if (match1 || match2) {
-            children.push(child);
-            used[child.id] = true;
-            if (child.spouse && byId[child.spouse]) {
-              used[child.spouse] = true;
-            }
-          }
-        });
-
-        rowItems.push({ generation: genIndex, type: 'couple', person1: person, person2: spouse, children: children });
-      } else {
-        used[person.id] = true;
-        rowItems.push({ generation: genIndex, type: 'single', person: person });
-      }
-    });
-
-    if (rowItems.length > 0) {
-      rows.push({ generation: genIndex, items: rowItems });
-    }
-  }
 
   if (!tree) return;
   tree.innerHTML = '';
 
-  rows.forEach(function (row, rowIdx) {
-    var heading = document.createElement('div');
-    heading.className = 'row-label';
-    heading.textContent = getGenerationLabel(row.generation);
-    tree.appendChild(heading);
-
-    var rowDiv = document.createElement('div');
-    rowDiv.className = 'row';
-
-    row.items.forEach(function (item) {
-      if (item.type === 'couple') {
-        var coupleGroup = document.createElement('div');
-        coupleGroup.className = 'couple-group';
-
-        var coupleDiv = document.createElement('div');
-        coupleDiv.className = 'couple';
-        coupleDiv.appendChild(makeCard(item.person1));
-        var heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.innerHTML = '♥';
-        coupleDiv.appendChild(heart);
-        coupleDiv.appendChild(makeCard(item.person2));
-        coupleGroup.appendChild(coupleDiv);
-
-        if (item.children && item.children.length > 0) {
-          var childConnector = document.createElement('div');
-          childConnector.className = 'child-connector';
-          coupleGroup.appendChild(childConnector);
-
-          var childrenDiv = document.createElement('div');
-          childrenDiv.className = 'children';
-
-          item.children.forEach(function (child) {
-            var childSpouse = child.spouse && byId[child.spouse] ? byId[child.spouse] : null;
-            if (childSpouse) {
-              var childCouple = document.createElement('div');
-              childCouple.className = 'couple';
-              childCouple.appendChild(makeCard(child));
-              var childHeart = document.createElement('div');
-              childHeart.className = 'heart';
-              childHeart.innerHTML = '♥';
-              childCouple.appendChild(childHeart);
-              childCouple.appendChild(makeCard(childSpouse));
-              childrenDiv.appendChild(childCouple);
-            } else {
-              childrenDiv.appendChild(makeCard(child));
-            }
-          });
-
-          coupleGroup.appendChild(childrenDiv);
-        }
-
-        rowDiv.appendChild(coupleGroup);
-      } else {
-        var singleDiv = document.createElement('div');
-        singleDiv.className = 'single';
-        singleDiv.appendChild(makeCard(item.person));
-        rowDiv.appendChild(singleDiv);
-      }
-    });
-
-    tree.appendChild(rowDiv);
-    if (rowIdx < rows.length - 1) {
-      var connector = document.createElement('div');
-      connector.className = 'connector';
-      tree.appendChild(connector);
+  var rootRow = document.createElement('div');
+  rootRow.className = 'row';
+  roots.forEach(function (root) {
+    var familyBlock = renderFamilyBlock(root);
+    if (familyBlock) {
+      rootRow.appendChild(familyBlock);
     }
   });
+  tree.appendChild(rootRow);
 }
 
 function getGenerationLabel(generationIndex) {
