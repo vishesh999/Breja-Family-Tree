@@ -20,9 +20,17 @@
     <p class="subtitle">Four Generations</p>
   </header>
 
+  <div class="corner-legend" aria-label="Legend">
+    <span><strong>♥</strong> spouse</span>
+    <span class="legend-item legend-deceased">●</span>
+    <span><strong>🕊</strong> living</span>
+  </div>
+
   <div class="toolbar">
-    <label for="search" class="search-label">Search family members</label>
-    <input id="search" type="search" placeholder="Search by name, role, or year" aria-label="Search family members">
+    <div class="search-block">
+      <label for="search" class="search-label">Search family members</label>
+      <input id="search" type="search" placeholder="Search by name, role, or year" aria-label="Search family members">
+    </div>
     <a id="download-json" class="download-link" href="data/family.json" download="family.json">Download family data</a>
   </div>
 
@@ -30,11 +38,6 @@
 
   <section class="info" aria-label="Family tree information">
     <p>Use the search box to highlight members in the tree. The heart icon connects spouses; faded cards mark deceased family members.</p>
-    <div class="legend" aria-label="Legend">
-      <span><strong>♥</strong> spouse</span>
-      <span class="legend-item legend-deceased">●</span>
-      <span><strong>🕊</strong> living</span>
-    </div>
   </section>
 
   <section id="tree-container" class="tree-container" aria-label="Family tree">

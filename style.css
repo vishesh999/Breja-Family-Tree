@@ -10,6 +10,7 @@ body {
 }
 
 main {
+  position: relative;
   max-width: 1320px;
   margin: 0 auto;
 }
@@ -47,11 +48,18 @@ header h1 {
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   gap: 12px;
   align-items: center;
-  margin-bottom: 20px;
-  text-align: center;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.search-block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 
 .search-label {
@@ -117,21 +125,38 @@ header h1 {
 .legend {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 10px;
   margin-top: 14px;
 }
 
+.corner-legend {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(214, 178, 94, 0.18);
+  color: rgba(246, 237, 216, 0.9);
+  font-size: 0.92rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+}
+
+.corner-legend span,
 .legend span {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
+  gap: 6px;
+  padding: 8px 12px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(214, 178, 94, 0.18);
-  color: rgba(246, 237, 216, 0.8);
-  font-size: 0.92rem;
 }
 
 .legend-deceased {
@@ -276,8 +301,9 @@ header h1 {
 }
 
 .card.match {
-  border-color: #f5d48e;
-  box-shadow: 0 0 0 3px rgba(245, 212, 142, 0.18);
+  background: rgba(255, 241, 181, 0.08);
+  border-color: #fff0ac;
+  box-shadow: 0 0 0 4px rgba(255, 241, 172, 0.22);
 }
 
 .card.deceased {
@@ -345,6 +371,12 @@ header h1 {
   .row { gap: 24px; }
   .toolbar { gap: 10px; }
   .row-label { margin-top: 18px; }
+}
+
+@media (min-width: 1200px) {
+  .row {
+    flex-wrap: nowrap;
+  }
 }
 
 @media (max-width: 520px) {

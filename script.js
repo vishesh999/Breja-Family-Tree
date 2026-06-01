@@ -60,10 +60,16 @@ function handleSearch(event) {
   }
 
   var matches = rawPeople.filter(function (person) {
-    return normalizeText(person.name).includes(query) ||
-      normalizeText(person.role).includes(query) ||
-      normalizeText(person.birth_year).includes(query) ||
-      normalizeText(person.death_year).includes(query);
+    var fields = [
+      person.name,
+      person.role,
+      person.birth_year,
+      person.death_year,
+      person.father,
+      person.mother,
+      Array.isArray(person.sibling) ? person.sibling.join(' ') : person.sibling
+    ].join(' ');
+    return normalizeText(fields).includes(query);
   }).map(function (person) { return person.id; });
 
   highlightMatches(matches);
@@ -72,6 +78,10 @@ function handleSearch(event) {
     setStatus('No family members matched your search.');
   } else {
     setStatus(matches.length + ' member' + (matches.length === 1 ? '' : 's') + ' highlighted.');
+    var firstCard = tree && tree.querySelector('.card.match');
+    if (firstCard) {
+      firstCard.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    }
   }
 }
 
