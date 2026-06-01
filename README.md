@@ -1,111 +1,48 @@
-# Breja Family Tree — Repository
+# Breja Family Tree
 
-This folder contains **two family tree applications**:
+This repository hosts a **static family tree website** built with HTML, CSS, and JavaScript.
 
-## 🌐 Static Site (GitHub Pages Ready)
+## What is included
 
-- `index.html`, `script.js`, `style.css` — pure HTML/CSS/JS tree viewer
-- `data/family.json` — family dataset with parent/sibling/spouse links
-- `img/` — photo directory
+- `index.html` — static site entry point
+- `script.js` — JavaScript for rendering the family tree
+- `style.css` — styling for the web app
+- `data/family.json` — the family tree dataset
+- `img/` — image assets used by the site
 
-Preview locally:
-```bash
-python -m http.server 8000  # open http://localhost:8000
-```
-
-## 🎨 Streamlit Interactive App (main.py)
-
-A feature-rich, interactive family tree builder with:
-
-### ✨ High Impact Improvements
-- **File-based persistence** — trees auto-save to `.streamlit_family_tree.json` (no URL length limits!)
-- **Search bar** — find people by name in the sidebar
-- **Delete confirmation** — prevents accidental deletion
-- **Selected person highlighting** — visual feedback in tree SVG
-- **Notes & image fields** — add rich metadata to each person
-
-### 🔧 Medium Impact Improvements
-- **Type annotations** — full typing for IDE support & clarity
-- **Consolidated forms** — reusable `person_form()` helper reduces duplication
-- **Better error messages** — contextual details (e.g., "only 5 years apart" vs generic errors)
-- **Responsive SVG** — media queries for mobile; scales properly on small screens
-- **Comprehensive unit tests** — 30+ tests covering all core logic
-
-### Features
-- ✅ Multiple entry modes: Add Person, Quick Add, Link Existing
-- ✅ Full family tree visualization with expand/collapse
-- ✅ Validation: circular references, age gaps, sex/role checks
-- ✅ Relationship queries: parents, grandparents, siblings, cousins, aunts/uncles
-- ✅ JSON export/import
-- ✅ Auto-save on every change
-
-### Getting Started
+## Run locally
 
 ```bash
-# Install dependencies
-python -m pip install -r requirements.txt
-
-# Run the app
-streamlit run main.py
+cd /Users/vbreja/Desktop/Different_Works/Family_Tree
+python -m http.server 8000
 ```
 
-The app opens at `http://localhost:8501`.
-
-### Run Tests
+Then open:
 
 ```bash
-pytest test_family_tree.py -v
+http://localhost:8000
 ```
 
-Tests cover:
-- Person model (add/remove children/spouses)
-- Validation (dates, age gaps, circular references)
-- Family relationships (parents, grandparents, siblings, cousins)
-- JSON serialization round-trips
-- 30+ test cases total
+## Deploy to GitHub Pages
 
-### File Structure
+1. Push this repository to GitHub if not already pushed.
+2. Open the GitHub repo in your browser.
+3. Go to **Settings** → **Pages**.
+4. Under **Source**, select **main** branch and **/root** folder.
+5. Save and wait a minute for GitHub Pages to publish.
 
-```
-Family_Tree/
-├── main.py                      # Streamlit app (improved)
-├── test_family_tree.py          # Unit tests
-├── requirements.txt             # Python dependencies
-├── .env.example                 # Sample environment variables
-├── .streamlit_family_tree.json  # Persisted tree (auto-created)
-├── index.html                   # Static site entry
-├── script.js                    # Static site rendering
-├── style.css                    # Static site styles
-├── data/                        # Static site data
-├── img/                         # Photos
-└── README.md                    # This file
-```
+Your site will usually appear at:
 
-### Notes
-
-- **Persistence**: Streamlit app saves to `.streamlit_family_tree.json` in the workspace folder (survives restarts)
-- **Formats**: Static site uses different JSON schema (`father`/`mother` keys); Streamlit uses `parent_id` fields
-- **Scaling**: Streamlit handles 100+ people smoothly; static site works with any size
-- **Mobile**: Streamlit app is responsive; test it on your phone
-
-### Environment Variables
-
-See `.env.example`:
 ```bash
-STREAMLIT_PORT=8501           # Custom port (default 8501)
-FAMILY_JSON_PATH=.streamlit_family_tree.json  # Custom save location
-VERBOSE=false                 # Enable debug logging
+https://<your-username>.github.io/<repo-name>/
 ```
 
-Create a `.env` file and load it:
-```bash
-cp .env.example .env
-# Edit .env as needed
-```
+## Update the family tree
 
-### Backups
+Edit `data/family.json` with your family members.
 
-Your original `Family_Tree` folder was backed up at:
-```
-../backups/Family_Tree_backup_<timestamp>/
-```
+## Notes
+
+- This repo is now static-only.
+- There is no Streamlit or Python app included.
+- Visitors can view the tree, but cannot edit it through the website.
