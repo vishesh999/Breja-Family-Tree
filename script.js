@@ -160,105 +160,112 @@ function renderTree(people) {
   var byId = {};
   people.forEach(function (person) { byId[person.id] = person; });
 
-  function getChildren(parentA, parentB) {
-    return people.filter(function (child) {
-      if (!child.father && !child.mother) return false;
-      if (parentB === null) {
-        return child.father === parentA || child.mother === parentA;
-      }
-      return (child.father === parentA && child.mother === parentB) ||
-             (child.father === parentB && child.mother === parentA);
+  var generation = {};
+  function computeGeneration(id, visited) {
+    if (visited && visited.has(id)) return 0;
+    if (generation[id] !== undefined) return generation[id];
+    var person = byId[id];
+    if (!person) return generation[id] = 0;
+    var nextVisited = visited ? new Set(visited) : new Set();
+    nextVisited.add(id);
+    var parentGen = -1;
+    if (person.father && byId[person.father]) {
+      parentGen = Math.max(parentGen, computeGeneration(person.father, nextVisited));
+    }
+    if (person.mother && byId[person.mother]) {
+      parentGen = Math.max(parentGen, computeGeneration(person.mother, nextVisited));
+    }
+    generation[id] = parentGen < 0 ? 0 : parentGen + 1;
+    return generation[id];
+  }
+
+  people.forEach(function (person) { computeGeneration(person.id); });
+
+  var rows = [];
+  var maxGen = Math.max.apply(null, Object.keys(generation).map(function (key) { return generation[key]; }));
+
+  function getParentGroupKey(person) {
+    if (person.father && person.mother) {
+      return [person.father, person.mother].sort().join('-');
+    }
+    return person.father || person.mother || 'root';
+  }
+
+  var orderMap = { root: 0 };
+  for (var gen = 0; gen <= maxGen; gen += 1) {
+    var generationPeople = people.filter(function (person) { return generation[person.id] === gen; });
+    if (!generationPeople.length) continue;
+
+    generationPeople.sort(function (a, b) {
+      var aKey = getParentGroupKey(a);
+      var bKey = getParentGroupKey(b);
+      var aOrder = orderMap[aKey] !== undefined ? orderMap[aKey] : 999;
+      var bOrder = orderMap[bKey] !== undefined ? orderMap[bKey] : 999;
+      if (aOrder !== bOrder) return aOrder - bOrder;
+      if (a.name !== b.name) return a.name.localeCompare(b.name);
+      return a.id.localeCompare(b.id);
     });
-  }
 
-  var rendered = {};
-
-  function renderFamilyBlock(person) {
-    if (rendered[person.id]) return null;
-
-    var spouse = person.spouse && byId[person.spouse] ? byId[person.spouse] : null;
-    if (spouse && rendered[spouse.id]) {
-      spouse = null;
-    }
-
-    if (spouse && person.id > spouse.id) {
-      return null;
-    }
-
-    var block = document.createElement('div');
-    block.className = 'family-block';
-
-    var coupleGroup = document.createElement('div');
-    coupleGroup.className = 'couple-group';
-
-    if (spouse) {
-      rendered[person.id] = true;
-      rendered[spouse.id] = true;
-      var coupleDiv = document.createElement('div');
-      coupleDiv.className = 'couple';
-      coupleDiv.appendChild(makeCard(person));
-      var heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.innerHTML = '♥';
-      coupleDiv.appendChild(heart);
-      coupleDiv.appendChild(makeCard(spouse));
-      coupleGroup.appendChild(coupleDiv);
-    } else {
-      rendered[person.id] = true;
-      var singleDiv = document.createElement('div');
-      singleDiv.className = 'single';
-      singleDiv.appendChild(makeCard(person));
-      coupleGroup.appendChild(singleDiv);
-    }
-
-    block.appendChild(coupleGroup);
-
-    var children = getChildren(person.id, spouse ? spouse.id : null);
-    if (children.length) {
-      var childConnector = document.createElement('div');
-      childConnector.className = 'child-connector';
-      block.appendChild(childConnector);
-
-      var childrenRow = document.createElement('div');
-      childrenRow.className = 'children children-row';
-      children.forEach(function (child) {
-        var childBlock = renderFamilyBlock(child);
-        if (childBlock) {
-          childrenRow.appendChild(childBlock);
-        }
-      });
-      // mark groups with many children so CSS can adjust layout
-      if (children.length > 4) {
-        childrenRow.classList.add('many-children');
+    var used = {};
+    var rowItems = [];
+    generationPeople.forEach(function (person) {
+      if (used[person.id]) return;
+      var spouse = person.spouse && byId[person.spouse] && generation[person.spouse] === gen ? byId[person.spouse] : null;
+      if (spouse && !used[spouse.id] && person.id < spouse.id) {
+        used[person.id] = true;
+        used[spouse.id] = true;
+        var key = [person.id, spouse.id].sort().join('-');
+        rowItems.push({ type: 'couple', person1: person, person2: spouse, groupKey: key });
+        orderMap[key] = Object.keys(orderMap).length;
+      } else {
+        used[person.id] = true;
+        rowItems.push({ type: 'single', person: person, groupKey: getParentGroupKey(person) });
+        orderMap[person.id] = Object.keys(orderMap).length;
       }
-      block.appendChild(childrenRow);
-    }
+    });
 
-    return block;
+    rows.push({ generation: gen, items: rowItems });
   }
-
-  // roots: select top-level elders — those without parents but who are actual family heads
-  var roots = people.filter(function (person) {
-    var hasParents = person.father || person.mother;
-    if (hasParents) return false;
-    var isParent = people.some(function (child) { return child.father === person.id || child.mother === person.id; });
-    var spouseIsParent = person.spouse && people.some(function (child) { return child.father === person.spouse || child.mother === person.spouse; });
-    var isGrand = /grandfather|grandmother|grand/i.test(String(person.role || ''));
-    return isParent || spouseIsParent || isGrand;
-  });
 
   if (!tree) return;
   tree.innerHTML = '';
 
-  var rootRow = document.createElement('div');
-  rootRow.className = 'row';
-  roots.forEach(function (root) {
-    var familyBlock = renderFamilyBlock(root);
-    if (familyBlock) {
-      rootRow.appendChild(familyBlock);
+  rows.forEach(function (row, rowIndex) {
+    var rowLabel = document.createElement('div');
+    rowLabel.className = 'row-label';
+    rowLabel.textContent = getGenerationLabel(row.generation);
+    tree.appendChild(rowLabel);
+
+    var rowDiv = document.createElement('div');
+    rowDiv.className = 'row';
+    row.items.forEach(function (item) {
+      var cell = document.createElement('div');
+      cell.className = 'family-item';
+      if (item.type === 'couple') {
+        var coupleDiv = document.createElement('div');
+        coupleDiv.className = 'couple';
+        coupleDiv.appendChild(makeCard(item.person1));
+        var heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '♥';
+        coupleDiv.appendChild(heart);
+        coupleDiv.appendChild(makeCard(item.person2));
+        cell.appendChild(coupleDiv);
+      } else {
+        var singleDiv = document.createElement('div');
+        singleDiv.className = 'single';
+        singleDiv.appendChild(makeCard(item.person));
+        cell.appendChild(singleDiv);
+      }
+      rowDiv.appendChild(cell);
+    });
+    tree.appendChild(rowDiv);
+    if (rowIndex < rows.length - 1) {
+      var connector = document.createElement('div');
+      connector.className = 'connector';
+      tree.appendChild(connector);
     }
   });
-  tree.appendChild(rootRow);
 }
 
 function getGenerationLabel(generationIndex) {

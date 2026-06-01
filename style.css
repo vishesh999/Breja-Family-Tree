@@ -181,19 +181,20 @@ header h1 {
 #tree {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0;
+  align-items: stretch;
+  gap: 12px;
   transform: scale(1);
   transform-origin: top center;
   transition: transform 0.22s ease;
 }
 
 .row-label {
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(246, 237, 216, 0.5);
-  margin: 24px auto 12px;
+  margin: 24px 0 12px;
+  text-align: center;
 }
 
 .zoom-controls {
@@ -221,53 +222,59 @@ header h1 {
   transform: translateY(-1px);
 }
 
-.family-block {
+.family-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  min-width: 200px;
-  max-width: 360px;
-  margin: 0 12px;
-}
-
-.children-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 24px;
-  margin-top: 4px;
-}
-
-/* For dense families, keep children in a horizontal scroller to avoid wrapping */
-.children-row.many-children {
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  padding-bottom: 8px;
-}
-
-.children-row.many-children .family-block {
-  min-width: 180px;
-  margin: 0 8px;
+  min-width: 190px;
+  max-width: 260px;
+  flex-shrink: 0;
 }
 
 .row {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  gap: 40px;
-  flex-wrap: wrap;
-  margin: 0;
+  gap: 30px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 10px 0;
+  min-width: 100%;
 }
 
-/* ─── Couple group (two people with heart) ───────────────────────────────────── */
+.row::-webkit-scrollbar {
+  height: 10px;
+}
+
+.row::-webkit-scrollbar-thumb {
+  background: rgba(214, 178, 94, 0.35);
+  border-radius: 999px;
+}
+
 .couple {
   display: flex;
   align-items: center;
-  gap: 0;
-  position: relative;
+  gap: 10px;
+  flex-wrap: nowrap;
 }
 
+.children {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.children.many-children {
+  border-top: 1px solid rgba(214, 178, 94, 0.1);
+  padding-top: 10px;
+}
+
+/* ─── Couple group (two people with heart) ───────────────────────────────────── */
 .couple .card {
   flex-shrink: 0;
 }
@@ -306,11 +313,17 @@ header h1 {
 
 .children {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   gap: 24px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   width: 100%;
+  overflow-x: auto;
+}
+
+.children.many-children {
+  border-top: 1px solid rgba(214, 178, 94, 0.1);
+  padding-top: 10px;
 }
 
 /* ─── Single person ──────────────────────────────────────────────────────────── */
