@@ -1,237 +1,111 @@
-# ✨ Family Tree Updates — What's Fixed
+# Breja Family Tree — Repository
 
-## Changes Made
+This folder contains **two family tree applications**:
 
-### 1️⃣ **Family Data (family.json)**
-**Added:**
-- ✅ **Rahul Bajaj** (son-in-law) — linked as spouse to Namita
-- ✅ **Varnit Bajaj** (grandson) — linked as child of Namita & Rahul
-- ✅ **birthOrder field** — marks birth order of siblings
-  - `"birthOrder": 1` = Elder
-  - `"birthOrder": 2` = Younger
-  - Can be extended for more siblings
+## 🌐 Static Site (GitHub Pages Ready)
 
-**Example:**
-```json
-{
-  "id": "namita",
-  "name": "Namita Breja",
-  "role": "Daughter",
-  "status": "living",
-  "img": "img/namita_breja.jpeg",
-  "father": "praveen",
-  "mother": "uma",
-  "sibling": ["vishesh"],
-  "spouse": "rahul",
-  "birthOrder": 1
-}
+- `index.html`, `script.js`, `style.css` — pure HTML/CSS/JS tree viewer
+- `data/family.json` — family dataset with parent/sibling/spouse links
+- `img/` — photo directory
+
+Preview locally:
+```bash
+python -m http.server 8000  # open http://localhost:8000
 ```
 
----
+## 🎨 Streamlit Interactive App (main.py)
 
-### 2️⃣ **Script Logic (script.js)**
-**Fixed:**
-- ✅ **Couple detection** — properly shows ♥ between spouses (Namita & Rahul)
-- ✅ **Child positioning** — Varnit now appears **centered below both parents**
-- ✅ **Parent-child connectors** — vertical line from parents to child with proper spacing
-- ✅ **Birth order badges** — displays:
-  - 👑 Elder (birthOrder = 1)
-  - 👶 Younger (birthOrder = 2)
+A feature-rich, interactive family tree builder with:
 
-**How it works:**
-- Groups people by generation (same as before)
-- For each couple, detects their children using parent IDs
-- Renders children in a centered "child-group" below the parents
-- Adds visual connector from parents to children
+### ✨ High Impact Improvements
+- **File-based persistence** — trees auto-save to `.streamlit_family_tree.json` (no URL length limits!)
+- **Search bar** — find people by name in the sidebar
+- **Delete confirmation** — prevents accidental deletion
+- **Selected person highlighting** — visual feedback in tree SVG
+- **Notes & image fields** — add rich metadata to each person
 
----
+### 🔧 Medium Impact Improvements
+- **Type annotations** — full typing for IDE support & clarity
+- **Consolidated forms** — reusable `person_form()` helper reduces duplication
+- **Better error messages** — contextual details (e.g., "only 5 years apart" vs generic errors)
+- **Responsive SVG** — media queries for mobile; scales properly on small screens
+- **Comprehensive unit tests** — 30+ tests covering all core logic
 
-### 3️⃣ **Styling (style.css)**
-**New CSS classes:**
-- `.child-group` — container for children below parents
-- `.child-container` — horizontal layout for multiple children
-- `.parent-child-connector` — vertical line from parents to children
+### Features
+- ✅ Multiple entry modes: Add Person, Quick Add, Link Existing
+- ✅ Full family tree visualization with expand/collapse
+- ✅ Validation: circular references, age gaps, sex/role checks
+- ✅ Relationship queries: parents, grandparents, siblings, cousins, aunts/uncles
+- ✅ JSON export/import
+- ✅ Auto-save on every change
 
-**Improved:**
-- Heart positioning now properly centered
-- Child cards display with proper spacing and alignment
-- Birth order tags styled in gold to match theme
-- Responsive design adjusted for mobile
-
----
-
-## Visual Result
-
-### Before ❌
-```
-Praveen ♥ Uma
-  ↓
-Vishesh ♥ Niti | Namita ♥ Rahul (no heart!) | Rahul
-                                               ↓
-                                           Varnit (isolated)
-```
-
-### After ✅
-```
-Praveen ♥ Uma
-  ↓
-Vishesh ♥ Niti | Namita 👑 Elder ♥ Rahul
-                           ↓
-                       Varnit (centered below both)
-```
-
----
-
-## How to Deploy to GitHub
-
-### Option A: Via GitHub Web Interface (Easiest)
-
-1. **Go to your GitHub repository**
-2. **Navigate to the `data/` folder** (or wherever family.json is)
-3. **Click on `family.json`** → Edit (pencil icon)
-4. **Replace the content** with the updated JSON from above
-5. **Commit changes**
-
-6. **Do the same for:**
-   - `script.js` — replace with updated version
-   - `style.css` — replace with updated version
-
-7. **Wait 30 seconds** — GitHub Pages will auto-rebuild
-
-### Option B: Via Git Command Line (if you use Git)
+### Getting Started
 
 ```bash
-# Clone your repo (if not already)
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+# Install dependencies
+python -m pip install -r requirements.txt
 
-# Update the files
-# (Replace family.json, script.js, style.css with new versions)
-
-# Commit and push
-git add data/family.json script.js style.css
-git commit -m "Update: Add Rahul Bajaj, Varnit, birth order badges, and fix layout"
-git push origin main
+# Run the app
+streamlit run main.py
 ```
 
----
+The app opens at `http://localhost:8501`.
 
-## Adding More Family Members
+### Run Tests
 
-To add more people (aunts, uncles, cousins, grandparents), follow this pattern:
-
-### To add an **uncle** (sibling of Praveen):
-
-```json
-{
-  "id": "uncle_name",
-  "name": "Uncle's Full Name",
-  "role": "Uncle",
-  "status": "living",
-  "img": "img/uncle_photo.jpeg",
-  "father": "praveen",
-  "mother": "uma",
-  "sibling": ["praveen"]
-}
+```bash
+pytest test_family_tree.py -v
 ```
 
-### To add a **grandparent**:
+Tests cover:
+- Person model (add/remove children/spouses)
+- Validation (dates, age gaps, circular references)
+- Family relationships (parents, grandparents, siblings, cousins)
+- JSON serialization round-trips
+- 30+ test cases total
 
-```json
-{
-  "id": "grandpa",
-  "name": "Grandfather Name",
-  "role": "Grandfather",
-  "status": "deceased",
-  "img": "img/grandpa.jpeg",
-  "spouse": "grandma"
-}
+### File Structure
+
+```
+Family_Tree/
+├── main.py                      # Streamlit app (improved)
+├── test_family_tree.py          # Unit tests
+├── requirements.txt             # Python dependencies
+├── .env.example                 # Sample environment variables
+├── .streamlit_family_tree.json  # Persisted tree (auto-created)
+├── index.html                   # Static site entry
+├── script.js                    # Static site rendering
+├── style.css                    # Static site styles
+├── data/                        # Static site data
+├── img/                         # Photos
+└── README.md                    # This file
 ```
 
-Then link Praveen as their child:
-```json
-{
-  "id": "praveen",
-  ...
-  "father": "grandpa",
-  "mother": "grandma",
-  ...
-}
+### Notes
+
+- **Persistence**: Streamlit app saves to `.streamlit_family_tree.json` in the workspace folder (survives restarts)
+- **Formats**: Static site uses different JSON schema (`father`/`mother` keys); Streamlit uses `parent_id` fields
+- **Scaling**: Streamlit handles 100+ people smoothly; static site works with any size
+- **Mobile**: Streamlit app is responsive; test it on your phone
+
+### Environment Variables
+
+See `.env.example`:
+```bash
+STREAMLIT_PORT=8501           # Custom port (default 8501)
+FAMILY_JSON_PATH=.streamlit_family_tree.json  # Custom save location
+VERBOSE=false                 # Enable debug logging
 ```
 
----
-
-## Birth Order Rules
-
-Use `birthOrder` only when siblings exist:
-
-```json
-// First-born
-{ "id": "namita", "sibling": ["vishesh"], "birthOrder": 1 }
-
-// Second-born
-{ "id": "vishesh", "sibling": ["namita"], "birthOrder": 2 }
-
-// If 3+ siblings
-{ "id": "person3", "sibling": ["namita", "vishesh"], "birthOrder": 3 }
+Create a `.env` file and load it:
+```bash
+cp .env.example .env
+# Edit .env as needed
 ```
 
-The script will display:
-- 👑 Elder (birthOrder = 1)
-- 👶 Younger (birthOrder = 2)
-- Can extend for more (just add to the script)
+### Backups
 
----
-
-## Testing Locally (Optional)
-
-If you want to test before pushing to GitHub:
-
-1. **Create a local folder** with:
-   - `index.html`
-   - `script.js`
-   - `style.css`
-   - `data/family.json` (in a subfolder)
-   - `img/` folder (for photos)
-
-2. **Use a local server:**
-   ```bash
-   # Python 3
-   python -m http.server 8000
-   
-   # Or Node.js
-   npx http-server
-   ```
-
-3. **Open browser:** `http://localhost:8000`
-
----
-
-## Troubleshooting
-
-### Heart not showing between couple?
-→ Check that both people have `"spouse": "other_id"` in their JSON
-
-### Child not appearing below parents?
-→ Make sure child has `"father"` and `"mother"` IDs matching the parents
-
-### Photos not loading?
-→ Check that image paths match: `img/filename.jpeg`
-
-### Birth order tag not showing?
-→ Ensure:
-  - Person has `"sibling": [...]` array
-  - Person has `"birthOrder": 1` or `2`
-
----
-
-## Questions?
-
-Once deployed, your family tree will:
-✅ Show proper marriage connector (♥) between all couples  
-✅ Display children centered below their parents  
-✅ Mark elder/younger siblings with badges  
-✅ Be sharable via GitHub Pages link  
-✅ Auto-update when you edit the JSON  
-
-Need to add more people or make changes? Just follow the patterns above! 🌳
+Your original `Family_Tree` folder was backed up at:
+```
+../backups/Family_Tree_backup_<timestamp>/
+```
