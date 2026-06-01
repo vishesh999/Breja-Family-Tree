@@ -5,7 +5,7 @@ This repository hosts a **static family tree website** built with HTML, CSS, and
 ## What is included
 
 - `index.html` — static site entry point
-- `script.js` — JavaScript for rendering the family tree
+- `script.js` — JavaScript for rendering the family tree and search highlighting
 - `style.css` — styling for the web app
 - `data/family.json` — the family tree dataset
 - `img/` — image assets used by the site
