@@ -38,6 +38,24 @@
     "spouse": "chaman"
   },
   {
+    "id": "sameer",
+    "name": "Sameer Breja",
+    "role": "Grandson",
+    "status": "living",
+    "father": "chaman",
+    "mother": "sudha",
+    "sibling": ["madhur"]
+  },
+  {
+    "id": "madhur",
+    "name": "Madhur Breja",
+    "role": "Grandson",
+    "status": "living",
+    "father": "chaman",
+    "mother": "sudha",
+    "sibling": ["sameer"]
+  },
+  {
     "id": "badi",
     "name": "Badi Bhua",
     "role": "Aunt",
@@ -116,6 +134,24 @@
     "birth_year": 1960,
     "img": "img/kanta_breja.jpg",
     "spouse": "raj"
+  },
+  {
+    "id": "kriti",
+    "name": "Kriti Breja",
+    "role": "Niece",
+    "status": "living",
+    "father": "raj",
+    "mother": "kanta",
+    "sibling": ["karan"]
+  },
+  {
+    "id": "karan",
+    "name": "Karan Breja",
+    "role": "Nephew",
+    "status": "living",
+    "father": "raj",
+    "mother": "kanta",
+    "sibling": ["kriti"]
   },
   {
     "id": "namita",
