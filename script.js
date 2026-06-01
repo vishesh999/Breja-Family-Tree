@@ -131,14 +131,15 @@ function scrollToCard(personId) {
   if (!tree || !treeContainer) return;
   var card = tree.querySelector('.card[data-person-id="' + personId + '"]');
   if (!card) return;
-  // compute unscaled offsets within tree
-  var scale = tree._scale || 1;
-  var targetX = card.offsetLeft + card.offsetWidth / 2;
-  var targetY = card.offsetTop + card.offsetHeight / 2;
-  var scrollLeft = Math.max(0, Math.round(targetX * scale - treeContainer.clientWidth / 2));
-  var scrollTop = Math.max(0, Math.round(targetY * scale - treeContainer.clientHeight / 2));
+  // use bounding boxes to account for nesting and transforms
+  var cardRect = card.getBoundingClientRect();
+  var containerRect = treeContainer.getBoundingClientRect();
+  var centerX = cardRect.left + cardRect.width / 2;
+  var centerY = cardRect.top + cardRect.height / 2;
+  var scrollLeft = Math.max(0, Math.round(treeContainer.scrollLeft + (centerX - containerRect.left) - treeContainer.clientWidth / 2));
+  var scrollTop = Math.max(0, Math.round(treeContainer.scrollTop + (centerY - containerRect.top) - treeContainer.clientHeight / 2));
   treeContainer.scrollTo({ left: scrollLeft, top: scrollTop, behavior: 'smooth' });
-  card.focus({preventScroll: true});
+  try { card.focus({preventScroll: true}); } catch (e) { card.focus(); }
 }
 
 showLoading();
@@ -232,8 +233,14 @@ function renderTree(people) {
     return block;
   }
 
+  // roots: select top-level elders — those without parents but who are actual family heads
   var roots = people.filter(function (person) {
-    return !person.father && !person.mother;
+    var hasParents = person.father || person.mother;
+    if (hasParents) return false;
+    var isParent = people.some(function (child) { return child.father === person.id || child.mother === person.id; });
+    var spouseIsParent = person.spouse && people.some(function (child) { return child.father === person.spouse || child.mother === person.spouse; });
+    var isGrand = /grandfather|grandmother|grand/i.test(String(person.role || ''));
+    return isParent || spouseIsParent || isGrand;
   });
 
   if (!tree) return;
