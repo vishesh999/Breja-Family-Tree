@@ -76,8 +76,26 @@
     "spouse": "badi"
   },
   {
+    "id": "yashul",
+    "name": "Yashul Ahuja",
+    "role": "Grandson",
+    "status": "living",
+    "father": "rajesh",
+    "mother": "badi",
+    "sibling": ["anshu"]
+  },
+  {
+    "id": "anshu",
+    "name": "Anshu Ahuja",
+    "role": "Granddaughter",
+    "status": "living",
+    "father": "rajesh",
+    "mother": "badi",
+    "sibling": ["yashul"]
+  },
+  {
     "id": "choti",
-    "name": "Choti Bhua",
+    "name": "Sushma Breja",
     "role": "Aunt",
     "status": "living",
     "birth_year": 1953,
@@ -88,12 +106,30 @@
   },
   {
     "id": "Fufaji",
-    "name": "Fufaji-2",
+    "name": "Rajendar Dua",
     "role": "Uncle-in-law",
     "status": "deceased",
     "birth_year": 1952,
     "img": "img/fufaji_2.jpg",
     "spouse": "choti"
+  },
+  {
+    "id": "sakshi",
+    "name": "Sakshi Dua",
+    "role": "Niece",
+    "status": "living",
+    "father": "Fufaji",
+    "mother": "choti",
+    "sibling": ["sahil"]
+  },
+  {
+    "id": "sahil",
+    "name": "Sahil Dua",
+    "role": "Nephew",
+    "status": "living",
+    "father": "Fufaji",
+    "mother": "choti",
+    "sibling": ["sakshi"]
   },
   {
     "id": "praveen",
