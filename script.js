@@ -227,6 +227,10 @@ function renderTree(people) {
           childrenRow.appendChild(childBlock);
         }
       });
+      // mark groups with many children so CSS can adjust layout
+      if (children.length > 4) {
+        childrenRow.classList.add('many-children');
+      }
       block.appendChild(childrenRow);
     }
 
