@@ -160,117 +160,116 @@ function renderTree(people) {
   var byId = {};
   people.forEach(function (person) { byId[person.id] = person; });
 
-  var generation = {};
-  function computeGeneration(id, visited) {
-    if (visited && visited.has(id)) return 0;
-    if (generation[id] !== undefined) return generation[id];
-    var person = byId[id];
-    if (!person) return generation[id] = 0;
-    var nextVisited = visited ? new Set(visited) : new Set();
-    nextVisited.add(id);
-    var parentGen = -1;
-    if (person.father && byId[person.father]) {
-      parentGen = Math.max(parentGen, computeGeneration(person.father, nextVisited));
+  var childrenByParents = {};
+  people.forEach(function (person) {
+    if (person.father || person.mother) {
+      var father = person.father || '';
+      var mother = person.mother || '';
+      var key = [father, mother].sort().join('-');
+      (childrenByParents[key] = childrenByParents[key] || []).push(person);
     }
-    if (person.mother && byId[person.mother]) {
-      parentGen = Math.max(parentGen, computeGeneration(person.mother, nextVisited));
+  });
+
+  function getChildren(person, spouse) {
+    if (!person) return [];
+    if (spouse) {
+      var key = [person.id, spouse.id].sort().join('-');
+      return childrenByParents[key] ? childrenByParents[key].slice() : [];
     }
-    generation[id] = parentGen < 0 ? 0 : parentGen + 1;
-    return generation[id];
-  }
-
-  people.forEach(function (person) { computeGeneration(person.id); });
-
-  var rows = [];
-  var maxGen = Math.max.apply(null, Object.keys(generation).map(function (key) { return generation[key]; }));
-
-  function getParentGroupKey(person) {
-    if (person.father && person.mother) {
-      return [person.father, person.mother].sort().join('-');
-    }
-    return person.father || person.mother || 'root';
-  }
-
-  var orderMap = { root: 0 };
-  for (var gen = 0; gen <= maxGen; gen += 1) {
-    var generationPeople = people.filter(function (person) { return generation[person.id] === gen; });
-    if (!generationPeople.length) continue;
-
-    generationPeople.sort(function (a, b) {
-      var aKey = getParentGroupKey(a);
-      var bKey = getParentGroupKey(b);
-      var aOrder = orderMap[aKey] !== undefined ? orderMap[aKey] : 999;
-      var bOrder = orderMap[bKey] !== undefined ? orderMap[bKey] : 999;
-      if (aOrder !== bOrder) return aOrder - bOrder;
-      if (a.name !== b.name) return a.name.localeCompare(b.name);
-      return a.id.localeCompare(b.id);
+    return people.filter(function (child) {
+      return child.father === person.id || child.mother === person.id;
     });
-
-    var used = {};
-    var rowItems = [];
-    generationPeople.forEach(function (person) {
-      if (used[person.id]) return;
-      var spouse = person.spouse && byId[person.spouse] && generation[person.spouse] === gen ? byId[person.spouse] : null;
-      if (spouse && !used[spouse.id] && person.id < spouse.id) {
-        used[person.id] = true;
-        used[spouse.id] = true;
-        var key = [person.id, spouse.id].sort().join('-');
-        rowItems.push({ type: 'couple', person1: person, person2: spouse, groupKey: key });
-        orderMap[key] = Object.keys(orderMap).length;
-      } else {
-        used[person.id] = true;
-        rowItems.push({ type: 'single', person: person, groupKey: getParentGroupKey(person) });
-        orderMap[person.id] = Object.keys(orderMap).length;
-      }
-    });
-
-    rows.push({ generation: gen, items: rowItems });
   }
+
+  function byBirthThenName(a, b) {
+    var ay = a.birth_year || 9999;
+    var by = b.birth_year || 9999;
+    if (ay !== by) return ay - by;
+    return String(a.name).localeCompare(String(b.name));
+  }
+
+  var rendered = {};
+
+  function renderNode(person) {
+    if (!person || rendered[person.id]) return null;
+
+    var spouse = person.spouse && byId[person.spouse] ? byId[person.spouse] : null;
+    if (spouse && rendered[spouse.id]) spouse = null;
+
+    rendered[person.id] = true;
+
+    var li = document.createElement('li');
+    li.className = 'node';
+
+    var personWrap = document.createElement('div');
+    personWrap.className = 'person';
+
+    if (spouse) {
+      rendered[spouse.id] = true;
+      var coupleDiv = document.createElement('div');
+      coupleDiv.className = 'couple';
+      coupleDiv.appendChild(makeCard(person));
+      var heart = document.createElement('span');
+      heart.className = 'heart';
+      heart.textContent = '♥';
+      coupleDiv.appendChild(heart);
+      coupleDiv.appendChild(makeCard(spouse));
+      personWrap.appendChild(coupleDiv);
+    } else {
+      var singleDiv = document.createElement('div');
+      singleDiv.className = 'single';
+      singleDiv.appendChild(makeCard(person));
+      personWrap.appendChild(singleDiv);
+    }
+
+    li.appendChild(personWrap);
+
+    var children = getChildren(person, spouse).filter(function (child) {
+      return !rendered[child.id];
+    });
+    children.sort(byBirthThenName);
+
+    if (children.length) {
+      var branches = document.createElement('ul');
+      branches.className = 'branches';
+      children.forEach(function (child) {
+        var childNode = renderNode(child);
+        if (childNode) branches.appendChild(childNode);
+      });
+      if (branches.children.length) li.appendChild(branches);
+    }
+
+    return li;
+  }
+
+  var roots = people.filter(function (person) {
+    if (person.father || person.mother) return false;
+    if (!person.spouse) return true;
+    var spouse = byId[person.spouse];
+    return !spouse || (!spouse.father && !spouse.mother);
+  });
+
+  // Keep only one partner per root couple so it isn't rendered twice.
+  roots = roots.filter(function (person) {
+    var spouse = byId[person.spouse];
+    if (spouse && roots.indexOf(spouse) !== -1) {
+      return person.id <= spouse.id;
+    }
+    return true;
+  });
+
+  roots.sort(byBirthThenName);
 
   if (!tree) return;
   tree.innerHTML = '';
 
-  rows.forEach(function (row, rowIndex) {
-    var rowLabel = document.createElement('div');
-    rowLabel.className = 'row-label';
-    rowLabel.textContent = getGenerationLabel(row.generation);
-    tree.appendChild(rowLabel);
-
-    var rowDiv = document.createElement('div');
-    rowDiv.className = 'row';
-    row.items.forEach(function (item) {
-      var cell = document.createElement('div');
-      cell.className = 'family-item';
-      if (item.type === 'couple') {
-        var coupleDiv = document.createElement('div');
-        coupleDiv.className = 'couple';
-        coupleDiv.appendChild(makeCard(item.person1));
-        var heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.innerHTML = '♥';
-        coupleDiv.appendChild(heart);
-        coupleDiv.appendChild(makeCard(item.person2));
-        cell.appendChild(coupleDiv);
-      } else {
-        var singleDiv = document.createElement('div');
-        singleDiv.className = 'single';
-        singleDiv.appendChild(makeCard(item.person));
-        cell.appendChild(singleDiv);
-      }
-      rowDiv.appendChild(cell);
-    });
-    tree.appendChild(rowDiv);
-    if (rowIndex < rows.length - 1) {
-      var connector = document.createElement('div');
-      connector.className = 'connector';
-      tree.appendChild(connector);
-    }
+  var rootUl = document.createElement('ul');
+  rootUl.className = 'tree-root';
+  roots.forEach(function (root) {
+    var node = renderNode(root);
+    if (node) rootUl.appendChild(node);
   });
-}
-
-function getGenerationLabel(generationIndex) {
-  var labels = ['Founders', 'Second Generation', 'Third Generation', 'Fourth Generation'];
-  return labels[generationIndex] || 'Generation ' + (generationIndex + 1);
+  tree.appendChild(rootUl);
 }
 
 function makeCard(person) {

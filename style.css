@@ -179,13 +179,93 @@ header h1 {
 }
 
 #tree {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 12px;
+  display: inline-block;
+  min-width: 100%;
   transform: scale(1);
   transform-origin: top center;
   transition: transform 0.22s ease;
+}
+
+/* ─── Nested tree connectors ─────────────────────────────────────────────────── */
+.tree-root,
+.branches {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  list-style: none;
+  position: relative;
+}
+
+.branches {
+  padding-top: 34px;
+}
+
+.node {
+  list-style: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 34px 18px 0;
+}
+
+/* Top-level node has nothing above it */
+.tree-root > .node {
+  padding-top: 0;
+}
+
+/* Horizontal "ceiling" + vertical drop to each child */
+.branches > .node::before,
+.branches > .node::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 50%;
+  width: 50%;
+  height: 34px;
+  border-top: 1.5px solid rgba(214, 178, 94, 0.38);
+}
+
+.branches > .node::after {
+  right: auto;
+  left: 50%;
+  border-left: 1.5px solid rgba(214, 178, 94, 0.38);
+}
+
+/* Trim the outer edges so the ceiling spans only between siblings */
+.branches > .node:first-child::before,
+.branches > .node:last-child::after {
+  border: 0 none;
+}
+
+.branches > .node:last-child::before {
+  border-right: 1.5px solid rgba(214, 178, 94, 0.38);
+  border-radius: 0 8px 0 0;
+}
+
+.branches > .node:first-child::after {
+  border-radius: 8px 0 0 0;
+}
+
+/* A single child needs only the straight drop-line from its parent */
+.branches > .node:only-child {
+  padding-top: 0;
+}
+
+.branches > .node:only-child::before,
+.branches > .node:only-child::after {
+  display: none;
+}
+
+/* Vertical line from a parent down into its children group */
+.branches::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 34px;
+  border-left: 1.5px solid rgba(214, 178, 94, 0.38);
 }
 
 .row-label {
@@ -222,36 +302,7 @@ header h1 {
   transform: translateY(-1px);
 }
 
-.family-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  min-width: 190px;
-  max-width: 260px;
-  flex-shrink: 0;
-}
-
-.row {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 30px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  padding: 10px 0;
-  min-width: 100%;
-}
-
-.row::-webkit-scrollbar {
-  height: 10px;
-}
-
-.row::-webkit-scrollbar-thumb {
-  background: rgba(214, 178, 94, 0.35);
-  border-radius: 999px;
-}
-
+/* ─── Couple (two people with heart) ─────────────────────────────────────────── */
 .couple {
   display: flex;
   align-items: center;
@@ -259,22 +310,6 @@ header h1 {
   flex-wrap: nowrap;
 }
 
-.children {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 24px;
-  flex-wrap: nowrap;
-  width: 100%;
-  overflow-x: auto;
-}
-
-.children.many-children {
-  border-top: 1px solid rgba(214, 178, 94, 0.1);
-  padding-top: 10px;
-}
-
-/* ─── Couple group (two people with heart) ───────────────────────────────────── */
 .couple .card {
   flex-shrink: 0;
 }
@@ -283,47 +318,10 @@ header h1 {
   color: #d6b25e;
   font-size: 1.4rem;
   opacity: 0.86;
-  padding: 0 8px;
+  padding: 0 6px;
   flex-shrink: 0;
   position: relative;
   top: -2px;
-}
-
-/* ─── Couple with children ──────────────────────────────────────────────────── */
-.couple-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  position: relative;
-}
-
-.child-connector {
-  width: 2px;
-  height: 28px;
-  margin: 4px auto;
-  background: linear-gradient(
-    to bottom,
-    rgba(214, 178, 94, 0.55),
-    rgba(214, 178, 94, 0.08)
-  );
-  border-radius: 1px;
-  flex-shrink: 0;
-}
-
-.children {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 24px;
-  flex-wrap: nowrap;
-  width: 100%;
-  overflow-x: auto;
-}
-
-.children.many-children {
-  border-top: 1px solid rgba(214, 178, 94, 0.1);
-  padding-top: 10px;
 }
 
 /* ─── Single person ──────────────────────────────────────────────────────────── */
@@ -333,19 +331,6 @@ header h1 {
 
 .single .card {
   flex-shrink: 0;
-}
-
-/* ─── Connector between generations ──────────────────────────────────────────── */
-.connector {
-  width: 2px;
-  height: 52px;
-  margin: 12px auto 12px;
-  background: linear-gradient(
-    to bottom,
-    rgba(214, 178, 94, 0.55),
-    rgba(214, 178, 94, 0.08)
-  );
-  border-radius: 1px;
 }
 
 /* ─── Individual card ────────────────────────────────────────────────────────── */
@@ -438,13 +423,13 @@ header h1 {
 /* ─── Responsive ─────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   body { padding: 36px 12px 60px; }
-  .row { gap: 24px; }
   .toolbar { gap: 10px; }
-  .row-label { margin-top: 18px; }
+  .node { padding: 28px 10px 0; }
+  .branches { padding-top: 28px; }
 }
 
 @media (min-width: 1200px) {
-  .row {
+  .branches {
     flex-wrap: nowrap;
   }
 }
@@ -479,17 +464,8 @@ header h1 {
     font-size: 0.65rem;
   }
   
-  .row { 
-    gap: 16px; 
-  }
-  
   .couple .heart { 
     font-size: 1rem;
     padding: 0 4px;
-  }
-  
-  .connector {
-    height: 40px;
-    margin: 8px auto;
   }
 }
