@@ -44,7 +44,15 @@
     "status": "living",
     "father": "chaman",
     "mother": "sudha",
-    "sibling": ["madhur"]
+    "sibling": ["madhur"],
+    "spouse": "bhavna"
+  },
+  {
+    "id": "bhavna",
+    "name": "Bhavna Breja",
+    "role": "Granddaughter-in-law",
+    "status": "living",
+    "spouse": "sameer"
   },
   {
     "id": "madhur",
@@ -82,7 +90,15 @@
     "status": "living",
     "father": "rajesh",
     "mother": "badi",
-    "sibling": ["anshu"]
+    "sibling": ["anshu"],
+    "spouse": "upma"
+  },
+  {
+    "id": "upma",
+    "name": "Upma Ahuja",
+    "role": "Granddaughter-in-law",
+    "status": "living",
+    "spouse": "yashul"
   },
   {
     "id": "anshu",
@@ -91,7 +107,15 @@
     "status": "living",
     "father": "rajesh",
     "mother": "badi",
-    "sibling": ["yashul"]
+    "sibling": ["yashul"],
+    "spouse": "harish"
+  },
+  {
+    "id": "harish",
+    "name": "Harish Jijaji",
+    "role": "Grandson-in-law",
+    "status": "living",
+    "spouse": "anshu"
   },
   {
     "id": "choti",
@@ -120,7 +144,15 @@
     "status": "living",
     "father": "Fufaji",
     "mother": "choti",
-    "sibling": ["sahil"]
+    "sibling": ["sahil"],
+    "spouse": "sakshi_jijaji"
+  },
+  {
+    "id": "sakshi_jijaji",
+    "name": "Jijaji",
+    "role": "Nephew-in-law",
+    "status": "living",
+    "spouse": "sakshi"
   },
   {
     "id": "sahil",
@@ -178,7 +210,15 @@
     "status": "living",
     "father": "raj",
     "mother": "kanta",
-    "sibling": ["karan"]
+    "sibling": ["karan"],
+    "spouse": "sahil_khatri"
+  },
+  {
+    "id": "sahil_khatri",
+    "name": "Sahil Khatri",
+    "role": "Nephew-in-law",
+    "status": "living",
+    "spouse": "kriti"
   },
   {
     "id": "karan",
