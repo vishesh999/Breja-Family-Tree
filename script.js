@@ -67,9 +67,7 @@ function handleSearch(event) {
       person.role,
       person.birth_year,
       person.death_year,
-      person.father,
-      person.mother,
-      Array.isArray(person.sibling) ? person.sibling.join(' ') : person.sibling
+      person.status
     ].join(' ');
     return normalizeText(fields).includes(query);
   }).map(function (person) { return person.id; });
@@ -81,7 +79,7 @@ function handleSearch(event) {
   } else {
     setStatus(matches.length + ' member' + (matches.length === 1 ? '' : 's') + ' highlighted.');
     var firstId = matches[0];
-    if (firstId) scrollToCard(firstId);
+    if (firstId) scrollToCard(firstId, false);
   }
 }
 
@@ -127,7 +125,7 @@ zoomInButton && zoomInButton.addEventListener('click', function () {
 
 applyZoom();
 
-function scrollToCard(personId) {
+function scrollToCard(personId, focusCard) {
   if (!tree || !treeContainer) return;
   var card = tree.querySelector('.card[data-person-id="' + personId + '"]');
   if (!card) return;
@@ -139,7 +137,11 @@ function scrollToCard(personId) {
   var scrollLeft = Math.max(0, Math.round(treeContainer.scrollLeft + (centerX - containerRect.left) - treeContainer.clientWidth / 2));
   var scrollTop = Math.max(0, Math.round(treeContainer.scrollTop + (centerY - containerRect.top) - treeContainer.clientHeight / 2));
   treeContainer.scrollTo({ left: scrollLeft, top: scrollTop, behavior: 'smooth' });
-  try { card.focus({preventScroll: true}); } catch (e) { card.focus(); }
+  // Only move focus when explicitly requested, so live typing in the
+  // search box is never interrupted by focus jumping to a card.
+  if (focusCard) {
+    try { card.focus({ preventScroll: true }); } catch (e) { card.focus(); }
+  }
 }
 
 showLoading();
