@@ -9,7 +9,7 @@
   <meta property="og:description" content="Browse the Breja family tree with four generations of ancestors, spouses, and descendants.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="style.css?v=20260603b">
+  <link rel="stylesheet" href="style.css?v=20260603c">
 </head>
 <body>
 
@@ -20,11 +20,27 @@
     <p class="subtitle">Four Generations</p>
   </header>
 
-  <div class="corner-legend" aria-label="Legend">
-    <span><strong>♥</strong> spouse</span>
-    <span class="legend-item legend-deceased">●</span>
-    <span><strong>🕊</strong> living</span>
-  </div>
+  <table class="corner-legend" aria-label="Legend">
+    <caption>Legend</caption>
+    <tbody>
+      <tr>
+        <td class="legend-sym sym-spouse">♥</td>
+        <td class="legend-desc">Spouse link</td>
+      </tr>
+      <tr>
+        <td class="legend-sym sym-living">🕊</td>
+        <td class="legend-desc">Living</td>
+      </tr>
+      <tr>
+        <td class="legend-sym sym-deceased">●</td>
+        <td class="legend-desc">Deceased</td>
+      </tr>
+      <tr>
+        <td class="legend-sym sym-rank">1<span>st</span></td>
+        <td class="legend-desc">Birth order</td>
+      </tr>
+    </tbody>
+  </table>
 
   <div class="toolbar">
     <div class="search-block">
@@ -56,7 +72,7 @@
   <p class="error">JavaScript is required to render this family tree. To view the data, open <a href="data/family.json">data/family.json</a>.</p>
 </noscript>
 
-<script src="script.js?v=20260603b"></script>
+<script src="script.js?v=20260603c"></script>
 
 </body>
 </html>

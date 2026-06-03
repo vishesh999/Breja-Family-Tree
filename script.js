@@ -160,7 +160,7 @@ fetch('data/family.json', { cache: 'no-store' })
 
 function renderTree(people) {
   var byId = {};
-  people.forEach(function (person) { byId[person.id] = person; });
+  people.forEach(function (person, i) { byId[person.id] = person; person._idx = i; });
 
   var childrenByParents = {};
   people.forEach(function (person) {
@@ -184,10 +184,13 @@ function renderTree(people) {
   }
 
   function byBirthThenName(a, b) {
-    var ay = a.birth_year || 9999;
-    var by = b.birth_year || 9999;
-    if (ay !== by) return ay - by;
-    return String(a.name).localeCompare(String(b.name));
+    // An explicit `order` field wins so families can fix the exact sequence.
+    if (a.order != null && b.order != null) return a.order - b.order;
+    var ay = a.birth_year;
+    var by = b.birth_year;
+    if (ay != null && by != null && ay !== by) return ay - by;
+    // Otherwise keep the order in which they appear in the data file.
+    return (a._idx || 0) - (b._idx || 0);
   }
 
   var rendered = {};
@@ -234,7 +237,9 @@ function renderTree(people) {
     if (children.length) {
       var branches = document.createElement('ul');
       branches.className = 'branches';
-      children.forEach(function (child) {
+      children.forEach(function (child, idx) {
+        child._rank = idx;
+        child._rankTotal = children.length;
         var childNode = renderNode(child);
         if (childNode) branches.appendChild(childNode);
       });
@@ -274,6 +279,17 @@ function renderTree(people) {
   tree.appendChild(rootUl);
 }
 
+function siblingRankLabel(rank, total) {
+  if (rank == null || total == null || total < 2) return '';
+  if (rank === 0) return 'Eldest';
+  if (rank === total - 1) return 'Youngest';
+  var n = rank + 1;
+  var mod100 = n % 100;
+  var suffix = (mod100 >= 11 && mod100 <= 13) ? 'th'
+    : (['th', 'st', 'nd', 'rd'][n % 10] || 'th');
+  return n + suffix;
+}
+
 function makeCard(person) {
   var card = document.createElement('article');
   card.className = 'card' + (person.status === 'deceased' ? ' deceased' : '');
@@ -282,6 +298,15 @@ function makeCard(person) {
 
   var labelText = person.name + (person.role ? ' — ' + person.role : '') + (person.status ? ', ' + (person.status === 'deceased' ? 'deceased' : 'living') : '');
   card.setAttribute('aria-label', labelText);
+
+  var rankText = siblingRankLabel(person._rank, person._rankTotal);
+  if (rankText) {
+    var rankBadge = document.createElement('span');
+    rankBadge.className = 'rank-badge';
+    rankBadge.textContent = rankText;
+    rankBadge.setAttribute('title', rankText + ' sibling');
+    card.appendChild(rankBadge);
+  }
 
   var imgWrap = document.createElement('div');
   imgWrap.className = 'img-wrap';

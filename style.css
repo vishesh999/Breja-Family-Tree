@@ -27,6 +27,8 @@ header h1 {
   letter-spacing: 0.1em;
   color: #d6b25e;
   text-shadow: 0 2px 18px rgba(214, 178, 94, 0.25);
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .subtitle {
@@ -134,29 +136,71 @@ header h1 {
   position: absolute;
   top: 24px;
   right: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(214, 178, 94, 0.18);
-  color: rgba(246, 237, 216, 0.9);
-  font-size: 0.92rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+  border-collapse: separate;
+  border-spacing: 0;
+  padding: 8px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(40, 31, 18, 0.82), rgba(20, 15, 8, 0.82));
+  border: 1px solid rgba(214, 178, 94, 0.28);
+  color: rgba(246, 237, 216, 0.92);
+  font-size: 0.86rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
 }
 
-.corner-legend span,
-.legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(214, 178, 94, 0.18);
+.corner-legend caption {
+  caption-side: top;
+  text-align: left;
+  padding: 4px 8px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #d6b25e;
+}
+
+.corner-legend td {
+  padding: 6px 10px;
+  vertical-align: middle;
+}
+
+.corner-legend tr + tr td {
+  border-top: 1px solid rgba(214, 178, 94, 0.12);
+}
+
+.corner-legend .legend-sym {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.corner-legend .legend-sym {
+  border-radius: 8px;
+}
+
+.corner-legend .legend-desc {
+  white-space: nowrap;
+  color: rgba(246, 237, 216, 0.82);
+}
+
+.sym-spouse { color: #d6b25e; }
+.sym-living { color: rgba(246, 237, 216, 0.92); }
+.sym-deceased { color: rgba(224, 112, 112, 0.95); }
+
+.sym-rank {
+  color: #1c1408;
+  background: rgba(214, 178, 94, 0.9);
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.sym-rank span {
+  font-size: 0.6rem;
+  vertical-align: super;
 }
 
 .legend-deceased {
@@ -346,6 +390,23 @@ header h1 {
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
   cursor: default;
+  position: relative;
+}
+
+/* ─── Birth-order badge ──────────────────────────────────────────────────────── */
+.rank-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 2px 8px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #1c1408;
+  background: rgba(214, 178, 94, 0.92);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
 }
 
 .card:hover,
