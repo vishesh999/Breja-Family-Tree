@@ -19,7 +19,7 @@
   },
   {
     "id": "chaman",
-    "name": "Chaman Breja",
+    "name": "Chaman Kishore Breja",
     "role": "Uncle",
     "status": "deceased",
     "birth_year": 1953,
@@ -96,7 +96,7 @@
   },
   {
     "id": "rajesh",
-    "name": "Rajesh Ahuja",
+    "name": "Suresh Ahuja",
     "role": "Uncle-in-law",
     "status": "deceased",
     "birth_year": 1950,
@@ -187,7 +187,7 @@
   },
   {
     "id": "Fufaji",
-    "name": "Rajendar Dua",
+    "name": "Ashok Dua",
     "role": "Uncle-in-law",
     "status": "deceased",
     "birth_year": 1952,
@@ -255,7 +255,7 @@
   },
   {
     "id": "kanta",
-    "name": "Kanta Breja",
+    "name": "Chandra Kanta Breja",
     "role": "Aunt",
     "status": "living",
     "birth_year": 1960,
