@@ -46,11 +46,13 @@
     "birth_year": 1982,
     "father": "chaman",
     "mother": "sudha",
-    "sibling": ["madhur"],
-    "spouse": "bhavna"
+    "sibling": [
+      "madhur"
+    ],
+    "spouse": "bhawna"
   },
   {
-    "id": "bhavna",
+    "id": "bhawna",
     "name": "Bhawna Breja",
     "role": "Granddaughter-in-law",
     "status": "living",
@@ -64,8 +66,10 @@
     "status": "living",
     "birth_year": 2013,
     "father": "sameer",
-    "mother": "bhavna",
-    "sibling": ["kannan"]
+    "mother": "bhawna",
+    "sibling": [
+      "kannan"
+    ]
   },
   {
     "id": "kannan",
@@ -74,8 +78,10 @@
     "status": "living",
     "birth_year": 2019,
     "father": "sameer",
-    "mother": "bhavna",
-    "sibling": ["kiaan"]
+    "mother": "bhawna",
+    "sibling": [
+      "kiaan"
+    ]
   },
   {
     "id": "madhur",
@@ -85,10 +91,12 @@
     "birth_year": 1988,
     "father": "chaman",
     "mother": "sudha",
-    "sibling": ["sameer"]
+    "sibling": [
+      "sameer"
+    ]
   },
   {
-    "id": "badi",
+    "id": "kamlesh",
     "name": "Kamlesh Ahuja",
     "role": "Aunt",
     "status": "deceased",
@@ -97,25 +105,27 @@
     "img": "img/badi_bhua.jpg",
     "father": "hargovind",
     "mother": "ishwar",
-    "spouse": "rajesh"
+    "spouse": "suresh"
   },
   {
-    "id": "rajesh",
+    "id": "suresh",
     "name": "Suresh Ahuja",
     "role": "Uncle-in-law",
     "status": "deceased",
     "birth_year": 1950,
     "img": "img/rajesh_ahuja.jpg",
-    "spouse": "badi"
+    "spouse": "kamlesh"
   },
   {
     "id": "yashul",
     "name": "Yashul Ahuja",
     "role": "Grandson",
     "status": "living",
-    "father": "rajesh",
-    "mother": "badi",
-    "sibling": ["anshu"],
+    "father": "suresh",
+    "mother": "kamlesh",
+    "sibling": [
+      "anshu"
+    ],
     "spouse": "upma"
   },
   {
@@ -132,7 +142,9 @@
     "status": "living",
     "father": "yashul",
     "mother": "upma",
-    "sibling": ["inaya"]
+    "sibling": [
+      "inaya"
+    ]
   },
   {
     "id": "inaya",
@@ -141,16 +153,20 @@
     "status": "living",
     "father": "yashul",
     "mother": "upma",
-    "sibling": ["saranya"]
+    "sibling": [
+      "saranya"
+    ]
   },
   {
     "id": "anshu",
     "name": "Anshu Ahuja",
     "role": "Granddaughter",
     "status": "living",
-    "father": "rajesh",
-    "mother": "badi",
-    "sibling": ["yashul"],
+    "father": "suresh",
+    "mother": "kamlesh",
+    "sibling": [
+      "yashul"
+    ],
     "spouse": "harish"
   },
   {
@@ -161,25 +177,29 @@
     "spouse": "anshu"
   },
   {
-    "id": "subh",
+    "id": "shubh",
     "name": "Shubh Sharma",
     "role": "Great Grandson",
     "status": "living",
     "father": "harish",
     "mother": "anshu",
-    "sibling": ["ridhi"]
+    "sibling": [
+      "ridhima"
+    ]
   },
   {
-    "id": "ridhi",
+    "id": "ridhima",
     "name": "Ridhima Sharma",
     "role": "Great Granddaughter",
     "status": "living",
     "father": "harish",
     "mother": "anshu",
-    "sibling": ["subh"]
+    "sibling": [
+      "shubh"
+    ]
   },
   {
-    "id": "choti",
+    "id": "sushma",
     "name": "Sushma Dua",
     "role": "Aunt",
     "status": "living",
@@ -188,29 +208,31 @@
     "img": "img/choti_bhua.jpg",
     "father": "hargovind",
     "mother": "ishwar",
-    "spouse": "Fufaji"
+    "spouse": "ashok"
   },
   {
-    "id": "Fufaji",
+    "id": "ashok",
     "name": "Ashok Dua",
     "role": "Uncle-in-law",
     "status": "deceased",
     "birth_year": 1952,
     "img": "img/fufaji_2.jpg",
-    "spouse": "choti"
+    "spouse": "sushma"
   },
   {
     "id": "sakshi",
     "name": "Sakshi Dua",
     "role": "Niece",
     "status": "living",
-    "father": "Fufaji",
-    "mother": "choti",
-    "sibling": ["sahil"],
-    "spouse": "sakshi_jijaji"
+    "father": "ashok",
+    "mother": "sushma",
+    "sibling": [
+      "sahil"
+    ],
+    "spouse": "manjeet"
   },
   {
-    "id": "sakshi_jijaji",
+    "id": "manjeet",
     "name": "Manjeet Khurana",
     "role": "Nephew-in-law",
     "status": "living",
@@ -221,9 +243,11 @@
     "name": "Sahil Dua",
     "role": "Nephew",
     "status": "living",
-    "father": "Fufaji",
-    "mother": "choti",
-    "sibling": ["sakshi"]
+    "father": "ashok",
+    "mother": "sushma",
+    "sibling": [
+      "sakshi"
+    ]
   },
   {
     "id": "praveen",
@@ -274,7 +298,9 @@
     "status": "living",
     "father": "raj",
     "mother": "kanta",
-    "sibling": ["karan"],
+    "sibling": [
+      "karan"
+    ],
     "spouse": "sahil_khatri"
   },
   {
@@ -291,7 +317,9 @@
     "status": "living",
     "father": "raj",
     "mother": "kanta",
-    "sibling": ["kriti"]
+    "sibling": [
+      "kriti"
+    ]
   },
   {
     "id": "namita",
@@ -302,7 +330,9 @@
     "img": "img/namita_breja.jpg",
     "father": "praveen",
     "mother": "uma",
-    "sibling": ["vishesh"],
+    "sibling": [
+      "vishesh"
+    ],
     "spouse": "rahul"
   },
   {
@@ -314,7 +344,9 @@
     "img": "img/vishesh_breja.jpeg",
     "father": "praveen",
     "mother": "uma",
-    "sibling": ["namita"],
+    "sibling": [
+      "namita"
+    ],
     "spouse": "niti"
   },
   {
