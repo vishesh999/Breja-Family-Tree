@@ -20,7 +20,7 @@
   {
     "id": "chaman",
     "name": "Chaman Kishore Breja",
-    "role": "Uncle",
+    "role": "Son",
     "status": "deceased",
     "birth_year": 1953,
     "order": 1,
@@ -32,7 +32,7 @@
   {
     "id": "sudha",
     "name": "Sudha Breja",
-    "role": "Aunt",
+    "role": "Daughter-in-law",
     "status": "living",
     "birth_year": 1955,
     "img": "img/sudha_breja.jpg",
@@ -98,7 +98,7 @@
   {
     "id": "kamlesh",
     "name": "Kamlesh Ahuja",
-    "role": "Aunt",
+    "role": "Daughter",
     "status": "deceased",
     "birth_year": 1953,
     "order": 2,
@@ -110,7 +110,7 @@
   {
     "id": "suresh",
     "name": "Suresh Ahuja",
-    "role": "Uncle-in-law",
+    "role": "Son-in-law",
     "status": "deceased",
     "birth_year": 1950,
     "img": "img/rajesh_ahuja.jpg",
@@ -207,7 +207,7 @@
   {
     "id": "sushma",
     "name": "Sushma Dua",
-    "role": "Aunt",
+    "role": "Daughter",
     "status": "living",
     "birth_year": 1953,
     "order": 3,
@@ -219,7 +219,7 @@
   {
     "id": "ashok",
     "name": "Ashok Dua",
-    "role": "Uncle-in-law",
+    "role": "Son-in-law",
     "status": "deceased",
     "birth_year": 1952,
     "img": "img/fufaji_2.jpg",
@@ -228,7 +228,7 @@
   {
     "id": "sakshi",
     "name": "Sakshi Dua",
-    "role": "Niece",
+    "role": "Granddaughter",
     "status": "living",
     "father": "ashok",
     "mother": "sushma",
@@ -240,14 +240,14 @@
   {
     "id": "manjeet",
     "name": "Manjeet Khurana",
-    "role": "Nephew-in-law",
+    "role": "Grandson-in-law",
     "status": "living",
     "spouse": "sakshi"
   },
   {
     "id": "sahil",
     "name": "Sahil Dua",
-    "role": "Nephew",
+    "role": "Grandson",
     "status": "living",
     "father": "ashok",
     "mother": "sushma",
@@ -258,7 +258,7 @@
   {
     "id": "praveen",
     "name": "Praveen Kumar Breja",
-    "role": "Father",
+    "role": "Son",
     "status": "living",
     "birth_year": 1959,
     "order": 4,
@@ -270,7 +270,7 @@
   {
     "id": "uma",
     "name": "Uma Breja",
-    "role": "Mother",
+    "role": "Daughter-in-law",
     "status": "living",
     "birth_year": 1965,
     "img": "img/uma_breja.jpg",
@@ -279,7 +279,7 @@
   {
     "id": "raj",
     "name": "Raj Kumar Breja",
-    "role": "Uncle",
+    "role": "Son",
     "status": "living",
     "birth_year": 1953,
     "order": 5,
@@ -291,7 +291,7 @@
   {
     "id": "kanta",
     "name": "Chandra Kanta Breja",
-    "role": "Aunt",
+    "role": "Daughter-in-law",
     "status": "living",
     "birth_year": 1960,
     "img": "img/kanta_breja.jpg",
@@ -300,7 +300,7 @@
   {
     "id": "kriti",
     "name": "Kriti Breja",
-    "role": "Niece",
+    "role": "Granddaughter",
     "status": "living",
     "father": "raj",
     "mother": "kanta",
@@ -312,14 +312,14 @@
   {
     "id": "sahil_khatri",
     "name": "Sahil Khatri",
-    "role": "Nephew-in-law",
+    "role": "Grandson-in-law",
     "status": "living",
     "spouse": "kriti"
   },
   {
     "id": "karan",
     "name": "Karan Breja",
-    "role": "Nephew",
+    "role": "Grandson",
     "status": "living",
     "father": "raj",
     "mother": "kanta",
@@ -330,7 +330,7 @@
   {
     "id": "namita",
     "name": "Namita Breja",
-    "role": "Daughter 👑 Elder",
+    "role": "Granddaughter 👑 Elder",
     "status": "living",
     "birth_year": 1980,
     "img": "img/namita_breja.jpg",
@@ -344,7 +344,7 @@
   {
     "id": "vishesh",
     "name": "Vishesh Breja",
-    "role": "Son 👶 Younger",
+    "role": "Grandson 👶 Younger",
     "status": "living",
     "birth_year": 1993,
     "img": "img/vishesh_breja.jpeg",
@@ -358,7 +358,7 @@
   {
     "id": "rahul",
     "name": "Rahul Bajaj",
-    "role": "Son-in-law",
+    "role": "Grandson-in-law",
     "status": "living",
     "birth_year": 1978,
     "img": "img/rahul_bajaj.jpg",
@@ -367,7 +367,7 @@
   {
     "id": "niti",
     "name": "Niti Breja",
-    "role": "Daughter-in-law",
+    "role": "Granddaughter-in-law",
     "status": "living",
     "birth_year": 1995,
     "img": "img/niti_breja.jpeg",
