@@ -43,6 +43,7 @@
     "name": "Sameer Breja",
     "role": "Grandson",
     "status": "living",
+    "birth_year": 1982,
     "father": "chaman",
     "mother": "sudha",
     "sibling": ["madhur"],
@@ -50,9 +51,10 @@
   },
   {
     "id": "bhavna",
-    "name": "Bhavna Breja",
+    "name": "Bhawna Breja",
     "role": "Granddaughter-in-law",
     "status": "living",
+    "birth_year": 1983,
     "spouse": "sameer"
   },
   {
@@ -60,6 +62,7 @@
     "name": "Kiaan Breja",
     "role": "Great Grandson",
     "status": "living",
+    "birth_year": 2013,
     "father": "sameer",
     "mother": "bhavna",
     "sibling": ["kannan"]
@@ -69,6 +72,7 @@
     "name": "Kannan Breja",
     "role": "Great Grandson",
     "status": "living",
+    "birth_year": 2019,
     "father": "sameer",
     "mother": "bhavna",
     "sibling": ["kiaan"]
@@ -78,6 +82,7 @@
     "name": "Madhur Breja",
     "role": "Grandson",
     "status": "living",
+    "birth_year": 1988,
     "father": "chaman",
     "mother": "sudha",
     "sibling": ["sameer"]
@@ -157,7 +162,7 @@
   },
   {
     "id": "subh",
-    "name": "Subh Sharma",
+    "name": "Shubh Sharma",
     "role": "Great Grandson",
     "status": "living",
     "father": "harish",
@@ -166,7 +171,7 @@
   },
   {
     "id": "ridhi",
-    "name": "Ridhi Sharma",
+    "name": "Ridhima Sharma",
     "role": "Great Granddaughter",
     "status": "living",
     "father": "harish",
