@@ -163,6 +163,7 @@
     "name": "Anshu Ahuja",
     "role": "Granddaughter",
     "status": "living",
+    "birth_year": 1981,
     "order": 1,
     "father": "suresh",
     "mother": "kamlesh",
@@ -176,6 +177,7 @@
     "name": "Harish Sharma",
     "role": "Grandson-in-law",
     "status": "living",
+    "birth_year": 1974,
     "spouse": "anshu"
   },
   {
@@ -183,6 +185,7 @@
     "name": "Shubh Sharma",
     "role": "Great Grandson",
     "status": "living",
+    "birth_year": 2003,
     "father": "harish",
     "mother": "anshu",
     "sibling": [
@@ -194,6 +197,7 @@
     "name": "Ridhima Sharma",
     "role": "Great Granddaughter",
     "status": "living",
+    "birth_year": 2006,
     "father": "harish",
     "mother": "anshu",
     "sibling": [
@@ -256,7 +260,7 @@
     "name": "Praveen Kumar Breja",
     "role": "Father",
     "status": "living",
-    "birth_year": 1956,
+    "birth_year": 1959,
     "order": 4,
     "img": "img/praveen_kumar_breja.jpg",
     "father": "hargovind",
@@ -268,7 +272,7 @@
     "name": "Uma Breja",
     "role": "Mother",
     "status": "living",
-    "birth_year": 1958,
+    "birth_year": 1965,
     "img": "img/uma_breja.jpg",
     "spouse": "praveen"
   },
