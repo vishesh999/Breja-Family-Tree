@@ -283,7 +283,7 @@
     "status": "living",
     "birth_year": 1962,
     "order": 5,
-    "img": "img/raj_breja.jpg",
+    "img": "img/raj_kumar_breja.jpeg",
     "father": "hargovind",
     "mother": "ishwar",
     "spouse": "kanta"
@@ -294,7 +294,7 @@
     "role": "Daughter-in-law",
     "status": "living",
     "birth_year": 1967,
-    "img": "img/kanta_breja.jpg",
+    "img": "img/Chandra_kanta_breja.jpeg",
     "spouse": "raj"
   },
   {
@@ -303,6 +303,7 @@
     "role": "Granddaughter",
     "status": "living",
     "birth_year": 1994,
+    "img": "img/kriti_breja.jpeg",
     "father": "raj",
     "mother": "kanta",
     "sibling": [
@@ -316,6 +317,7 @@
     "role": "Grandson-in-law",
     "status": "living",
     "birth_year": 1993,
+    "img": "img/sahil_khatri.jpeg",
     "spouse": "kriti"
   },
   {
@@ -324,6 +326,7 @@
     "role": "Grandson",
     "status": "living",
     "birth_year": 1996,
+    "img": "img/karan_breja.jpeg",
     "father": "raj",
     "mother": "kanta",
     "sibling": [
