@@ -164,6 +164,7 @@
     "role": "Granddaughter",
     "status": "living",
     "birth_year": 1981,
+    "img": "img/anshu_ahuja.jpeg",
     "order": 1,
     "father": "suresh",
     "mother": "kamlesh",
@@ -198,6 +199,7 @@
     "role": "Great Granddaughter",
     "status": "living",
     "birth_year": 2006,
+    "img": "img/ridhima_ahuja.jpeg",
     "father": "harish",
     "mother": "anshu",
     "sibling": [
@@ -339,7 +341,7 @@
     "role": "Granddaughter 👑 Elder",
     "status": "living",
     "birth_year": 1989,
-    "img": "img/namita_breja.jpg",
+    "img": "img/namita_breja.jpeg",
     "father": "praveen",
     "mother": "uma",
     "sibling": [
@@ -367,7 +369,7 @@
     "role": "Grandson-in-law",
     "status": "living",
     "birth_year": 1988,
-    "img": "img/rahul_bajaj.jpg",
+    "img": "img/rahul_bajaj.jpeg",
     "spouse": "namita"
   },
   {
@@ -385,7 +387,7 @@
     "role": "Great Grandson",
     "status": "living",
     "birth_year": 2024,
-    "img": "img/varnit_bajaj.jpg",
+    "img": "img/varnit_bajaj.jpeg",
     "father": "rahul",
     "mother": "namita"
   }
