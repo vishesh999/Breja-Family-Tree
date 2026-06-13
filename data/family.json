@@ -338,7 +338,7 @@
     "name": "Namita Breja",
     "role": "Granddaughter 👑 Elder",
     "status": "living",
-    "birth_year": 1980,
+    "birth_year": 1989,
     "img": "img/namita_breja.jpg",
     "father": "praveen",
     "mother": "uma",
@@ -366,7 +366,7 @@
     "name": "Rahul Bajaj",
     "role": "Grandson-in-law",
     "status": "living",
-    "birth_year": 1978,
+    "birth_year": 1988,
     "img": "img/rahul_bajaj.jpg",
     "spouse": "namita"
   },
@@ -384,7 +384,7 @@
     "name": "Varnit Bajaj",
     "role": "Great Grandson",
     "status": "living",
-    "birth_year": 2018,
+    "birth_year": 2024,
     "img": "img/varnit_bajaj.jpg",
     "father": "rahul",
     "mother": "namita"
