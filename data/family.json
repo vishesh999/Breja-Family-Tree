@@ -281,7 +281,7 @@
     "name": "Raj Kumar Breja",
     "role": "Son",
     "status": "living",
-    "birth_year": 1953,
+    "birth_year": 1962,
     "order": 5,
     "img": "img/raj_breja.jpg",
     "father": "hargovind",
@@ -290,10 +290,10 @@
   },
   {
     "id": "kanta",
-    "name": "Chandra Kanta Breja",
+    "name": "Chander Kanta Breja",
     "role": "Daughter-in-law",
     "status": "living",
-    "birth_year": 1960,
+    "birth_year": 1967,
     "img": "img/kanta_breja.jpg",
     "spouse": "raj"
   },
@@ -302,6 +302,7 @@
     "name": "Kriti Breja",
     "role": "Granddaughter",
     "status": "living",
+    "birth_year": 1994,
     "father": "raj",
     "mother": "kanta",
     "sibling": [
@@ -314,6 +315,7 @@
     "name": "Sahil Khatri",
     "role": "Grandson-in-law",
     "status": "living",
+    "birth_year": 1993,
     "spouse": "kriti"
   },
   {
@@ -321,6 +323,7 @@
     "name": "Karan Breja",
     "role": "Grandson",
     "status": "living",
+    "birth_year": 1996,
     "father": "raj",
     "mother": "kanta",
     "sibling": [
