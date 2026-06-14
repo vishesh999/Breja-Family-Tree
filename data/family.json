@@ -223,7 +223,7 @@
     "name": "Ashok Dua",
     "role": "Son-in-law",
     "status": "deceased",
-    "birth_year": 1952,
+    "birth_year": 1959,
     "img": "img/fufaji_2.jpg",
     "spouse": "sushma"
   },
@@ -233,6 +233,7 @@
     "role": "Granddaughter",
     "status": "living",
     "birth_year": 1987,
+    "img": "img/sakshi_dua.jpeg",
     "father": "ashok",
     "mother": "sushma",
     "sibling": [
@@ -246,6 +247,7 @@
     "role": "Grandson-in-law",
     "status": "living",
     "birth_year": 1982,
+    "img": "img/manjeet_rai_khurana.jpeg",
     "spouse": "sakshi"
   },
   {
