@@ -211,9 +211,9 @@
     "name": "Sushma Dua",
     "role": "Daughter",
     "status": "living",
-    "birth_year": 1953,
+    "birth_year": 1957,
     "order": 3,
-    "img": "img/choti_bhua.jpg",
+    "img": "img/sushma_dua.jpeg",
     "father": "hargovind",
     "mother": "ishwar",
     "spouse": "ashok"
@@ -232,6 +232,7 @@
     "name": "Sakshi Dua",
     "role": "Granddaughter",
     "status": "living",
+    "birth_year": 1987,
     "father": "ashok",
     "mother": "sushma",
     "sibling": [
@@ -241,9 +242,10 @@
   },
   {
     "id": "manjeet",
-    "name": "Manjeet Khurana",
+    "name": "Manjeet Rai Khurana",
     "role": "Grandson-in-law",
     "status": "living",
+    "birth_year": 1982,
     "spouse": "sakshi"
   },
   {
@@ -251,6 +253,8 @@
     "name": "Sahil Dua",
     "role": "Grandson",
     "status": "living",
+    "birth_year": 1990,
+    "img": "img/sahil_dua.jpeg",
     "father": "ashok",
     "mother": "sushma",
     "sibling": [
