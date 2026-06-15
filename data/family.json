@@ -100,20 +100,20 @@
     "name": "Kamlesh Ahuja",
     "role": "Daughter",
     "status": "deceased",
-    "birth_year": 1953,
+    "birth_year": 1957,
     "order": 2,
-    "img": "img/badi_bhua.jpg",
+    "img": "img/kamlesh_ahuja.jpeg",
     "father": "hargovind",
     "mother": "ishwar",
     "spouse": "suresh"
   },
   {
     "id": "suresh",
-    "name": "Suresh Ahuja",
+    "name": "Suresh Chand Ahuja",
     "role": "Son-in-law",
     "status": "deceased",
-    "birth_year": 1950,
-    "img": "img/rajesh_ahuja.jpg",
+    "birth_year": 1953,
+    "img": "img/suresh_chand_ahuja.jpeg",
     "spouse": "kamlesh"
   },
   {
@@ -121,6 +121,7 @@
     "name": "Yashul Ahuja",
     "role": "Grandson",
     "status": "living",
+    "birth_year": 1983,
     "order": 2,
     "father": "suresh",
     "mother": "kamlesh",
@@ -134,6 +135,7 @@
     "name": "Upma Ahuja",
     "role": "Granddaughter-in-law",
     "status": "living",
+    "birth_year": 1985,
     "spouse": "yashul"
   },
   {
@@ -141,6 +143,7 @@
     "name": "Saranya Ahuja",
     "role": "Great Granddaughter",
     "status": "living",
+    "birth_year": 2010,
     "father": "yashul",
     "mother": "upma",
     "sibling": [
@@ -152,6 +155,7 @@
     "name": "Inaya Ahuja",
     "role": "Great Granddaughter",
     "status": "living",
+    "birth_year": 2016,
     "father": "yashul",
     "mother": "upma",
     "sibling": [
