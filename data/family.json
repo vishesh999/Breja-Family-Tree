@@ -136,7 +136,8 @@
     "role": "Granddaughter-in-law",
     "status": "living",
     "birth_year": 1985,
-    "spouse": "yashul"
+    "spouse": "yashul",
+    "img": "img/upma_ahuja.jpeg"
   },
   {
     "id": "saranya",
@@ -148,7 +149,8 @@
     "mother": "upma",
     "sibling": [
       "inaya"
-    ]
+    ],
+    "img": "img/saranya_ahuja.jpeg"
   },
   {
     "id": "inaya",
@@ -160,7 +162,8 @@
     "mother": "upma",
     "sibling": [
       "saranya"
-    ]
+    ],
+    "img": "img/inaya_ahuja.jpeg"
   },
   {
     "id": "anshu",
