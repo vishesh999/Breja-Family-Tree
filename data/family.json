@@ -211,7 +211,7 @@
     "name": "Sushma Dua",
     "role": "Daughter",
     "status": "living",
-    "birth_year": 1957,
+    "birth_year": 1961,
     "order": 3,
     "img": "img/sushma_dua.jpeg",
     "father": "hargovind",
@@ -224,7 +224,7 @@
     "role": "Son-in-law",
     "status": "deceased",
     "birth_year": 1959,
-    "img": "img/fufaji_2.jpg",
+    "img": "img/ashok_dua.jpeg",
     "spouse": "sushma"
   },
   {
@@ -298,7 +298,7 @@
   },
   {
     "id": "kanta",
-    "name": "Chander Kanta Breja",
+    "name": "Chander Kanta",
     "role": "Daughter-in-law",
     "status": "living",
     "birth_year": 1967,
